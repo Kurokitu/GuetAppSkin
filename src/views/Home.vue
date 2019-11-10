@@ -246,20 +246,15 @@ export default {
 
       this.axios({
         method: "post",
-        url: "https://gelinapi.kilins.com/gbh/login",
-        data: {
-              argv: { username: localStorage.getItem("UID"), password: localStorage.getItem("Password") },
-              func: "login",
-              version: "1.1.18"
-            },
-        //data: {identity: "student", password: localStorage.getItem("Password"), type: "init_login", username: localStorage.getItem("UID"), version: "1.1.18" },
-        // url: "https://gelinapi.kilins.com/gbh/edu",
+        // url: "https://gelinapi.kilins.com/gbh/login",
         // data: {
-        //   func: "info",
-        //   cookie: localStorage.getItem("cookie") +" " +localStorage.getItem("cookie_key"),
-        //   argv: {},
-        //   version: "1.1.18"
-        // },
+        //       argv: { username: localStorage.getItem("UID"), password: localStorage.getItem("Password") },
+        //       func: "login",
+        //       version: "1.1.18"
+        //     },
+        //data: {identity: "student", password: localStorage.getItem("Password"), type: "init_login", username: localStorage.getItem("UID"), version: "1.1.18" },
+        url: "https://gelinapi.kilins.com/gbh/edu",
+        data: {"func":"info","cookie":localStorage.getItem("cookie_key") +" " +localStorage.getItem("cookie"),"argv":{},"version":"1.1.18"},
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
@@ -288,15 +283,15 @@ export default {
             title: "错误",
             message: res.data.msg
           });          
-          //this.login();
+          this.relogin();
         }
           this.name = res.data.data.姓名;
           //this.id = res.data.data.学号;
           this.infolist = res.data.data;
           this.$forceUpdate();
           this.loading = false;
-          localStorage.setItem("cookie_key", res.data.cookie_key);
-          localStorage.setItem("cookie", res.data.cookie);
+          //localStorage.setItem("cookie_key", res.data.cookie_key);
+          //localStorage.setItem("cookie", res.data.cookie);
           //localStorage.setItem("bind_status", res.data.bind_status);
           //localStorage.setItem("openid", res.data.openid);
         }

@@ -86,11 +86,8 @@ export default {
           this.$forceUpdate();
         }
         if (res.data.status == 4) {
-          this.$notify.error({
-            title: "错误",
-            message: res.data.msg
-          });
-          this.relogin;
+          this.$message.error(res.data.msg+'正在重新登入，请稍等。');
+          this.relogin();
           // setTimeout(() => {
           //   window.location.href = "/";
           // }, 3000);

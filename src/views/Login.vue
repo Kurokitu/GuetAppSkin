@@ -72,11 +72,11 @@ export default {
 
           this.axios({
             method: "post",
-            url: "https://gelinapi.kilins.com/login_check/",
+            url: "https://gelinapi.kilins.com/gbh/login",
             data: {
-              func: "login",
               argv: { username: this.id, password: this.password },
-              version: "1.1.16"
+              func: "login",
+              version: "1.1.18"
             },
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
@@ -95,6 +95,8 @@ export default {
                 localStorage.removeItem("Password");
               }
               if (res.data.status == 2) {
+                localStorage.setItem("cookie_key", res.data.cookie_key);
+                localStorage.setItem("cookie", res.data.cookie);
                 window.location.href = "/";
               }
             } else {

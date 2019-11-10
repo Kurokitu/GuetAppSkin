@@ -62,6 +62,7 @@ export default {
   provide() {
     return {
       update: this.update,
+      login: this.login,
       relogin: this.relogin
     };
   },
@@ -82,17 +83,44 @@ export default {
         });
     },
 
-    relogin() {
+    login() {
       this.axios({
         method: "post",
-        url: "https://gelinapi.kilins.com/login_check/",
+        url: "https://gelinapi.kilins.com/gbh/login",
         data: {
           func: "login",
           argv: {
             username: localStorage.getItem("UID"),
             password: localStorage.getItem("Password")
           },
-          version: "1.1.16"
+          version: "1.1.18"
+        },
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      }).then(res => {
+          if(!res.data.status == 2){
+            //this.relogin();
+            //todo
+          }else{
+            localStorage.setItem("cookie_key", res.data.cookie_key);
+            localStorage.setItem("cookie", res.data.cookie);
+            location.reload();
+          }
+      });
+    },
+
+    relogin() {
+      this.axios({
+        method: "post",
+        url: "https://gelinapi.kilins.com/gbh/login",
+        data: {
+          func: "login",
+          argv: {
+            username: localStorage.getItem("UID"),
+            password: localStorage.getItem("Password")
+          },
+          version: "1.1.18"
         },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"

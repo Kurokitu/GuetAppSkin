@@ -33,7 +33,7 @@ export default {
     autoget() {
       this.axios({
         method: "post",
-        url: "https://gelinapi.kilins.com/info_check/",
+        url: "https://gelinapi.kilins.com/gbh/edu",
         data: {
           func: "selected",
           cookie:
@@ -41,7 +41,7 @@ export default {
             " " +
             localStorage.getItem("cookie"),
           argv: { type: "get", term: this.$route.params.t },
-          version: "1.1.16"
+          version: "1.1.18"
         },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"

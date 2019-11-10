@@ -72,7 +72,7 @@
 
 <script>
 export default {
-  inject: ["update"],
+  inject: ["update","login"],
   name: "home",
   /* eslint-disable */
   data() {
@@ -154,16 +154,16 @@ export default {
       if (this.hour >= 10) {
         this.ttime = "同学上午好！";
       }
-      if (this.hour >= 12) {
+      if (this.hour >= 11) {
         this.ttime = "同学中午好！";
       }
-      if (this.hour >= 14) {
+      if (this.hour >= 13) {
         this.ttime = "同学下午好！";
       }
-      if (this.hour >= 19) {
+      if (this.hour >= 18) {
         this.ttime = "同学傍晚好！";
       }
-      if (this.hour >= 20) {
+      if (this.hour >= 19) {
         this.ttime = "同学晚上好！";
       }
       this.$forceUpdate();
@@ -190,19 +190,19 @@ export default {
           }else{
             this.axios({
               method: "post",
-              url: "https://gelinapi.kilins.com/info_check/",
+              url: "https://gelinapi.kilins.com/gbh/edu",
               data: {
-                func: "change_passwd",
+                argv: {
+                  new_passwd: this.form.new_passwd,
+                  old_passwd: this.form.old_passwd,
+                  reNew_passwd: this.form.reNew_passwd
+                },
                 cookie:
                   localStorage.getItem("cookie_key") +
                   " " +
                   localStorage.getItem("cookie"),
-                argv: {
-                  old_passwd: this.form.old_passwd,
-                  new_passwd: this.form.new_passwd,
-                  reNew_passwd: this.form.reNew_passwd
-                },
-                version: "1.1.16"
+                  func: "change_passwd",
+                version: "1.1.18"
               },
               headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
@@ -246,15 +246,20 @@ export default {
 
       this.axios({
         method: "post",
-        url: "https://gelinapi.kilins.com/login_check/",
+        url: "https://gelinapi.kilins.com/gbh/login",
         data: {
-          func: "login",
-          argv: {
-            username: localStorage.getItem("UID"),
-            password: localStorage.getItem("Password")
-          },
-          version: "1.1.16"
-        },
+              argv: { username: localStorage.getItem("UID"), password: localStorage.getItem("Password") },
+              func: "login",
+              version: "1.1.18"
+            },
+        //data: {identity: "student", password: localStorage.getItem("Password"), type: "init_login", username: localStorage.getItem("UID"), version: "1.1.18" },
+        // url: "https://gelinapi.kilins.com/gbh/edu",
+        // data: {
+        //   func: "info",
+        //   cookie: localStorage.getItem("cookie") +" " +localStorage.getItem("cookie_key"),
+        //   argv: {},
+        //   version: "1.1.18"
+        // },
         headers: {
           "Content-Type": "application/x-www-form-urlencoded"
         }
@@ -277,6 +282,14 @@ export default {
             message: res.data.msg,
             type: "success"
           });
+        }
+        if (res.data.status == 4){
+          this.$notify.error({
+            title: "错误",
+            message: res.data.msg
+          });          
+          //this.login();
+        }
           this.name = res.data.data.姓名;
           //this.id = res.data.data.学号;
           this.infolist = res.data.data;
@@ -284,8 +297,10 @@ export default {
           this.loading = false;
           localStorage.setItem("cookie_key", res.data.cookie_key);
           localStorage.setItem("cookie", res.data.cookie);
+          //localStorage.setItem("bind_status", res.data.bind_status);
+          //localStorage.setItem("openid", res.data.openid);
         }
-      });
+      );
     },
 
     logout() {

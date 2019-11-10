@@ -72,7 +72,7 @@
 
 <script>
 export default {
-  inject: ["update","login"],
+  inject: ["update","login","relogin"],
   name: "home",
   /* eslint-disable */
   data() {
@@ -279,10 +279,7 @@ export default {
           });
         }
         if (res.data.status == 4){
-          this.$notify.error({
-            title: "错误",
-            message: res.data.msg
-          });          
+          this.$message.error(res.data.msg+'正在重新登入，请稍等。');
           this.relogin();
         }
           this.name = res.data.data.姓名;

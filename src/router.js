@@ -6,6 +6,7 @@ import Optionske from '@/views/Optionske.vue'
 import Optionskc from '@/views/Optionskc.vue'
 import Coures from '@/views/Coures.vue'
 import iSelectedget from '@/views/Selectedget.vue'
+import Creadit from '@/views/Creadit.vue'
 
 Vue.use(Router)
 
@@ -41,6 +42,10 @@ export default new Router({
       path: '/iSelectedget/:t',
       name: 'iSelectedget',
       component: iSelectedget
+    },{
+      path: '/Creadit',
+      name: 'Creaditc',
+      component: Creadit
     },
     {
       path: '/about',

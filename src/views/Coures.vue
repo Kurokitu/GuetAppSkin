@@ -334,27 +334,27 @@ export default {
           this.one = [
             {
               name: "1 - 2节",
-              time: "8:25至10:05",
+              time: "8:25至9:10 - 9:20至10:05",
               info: res.data.data[this.week]["1"][this.day]["0"]
             },
             {
               name: "3 - 4节",
-              time: "10:25至12:05",
+              time: "10:25至11:10 11:20至12:05",
               info: res.data.data[this.week]["2"][this.day]["0"]
             },
             {
               name: "5 - 6节",
-              time: "14:30至16:10",
+              time: "14:30至15:15 15:25至16:10",
               info: res.data.data[this.week]["3"][this.day]["0"]
             },
             {
               name: "7 - 8节",
-              time: "16:30至18:10",
+              time: "16:30至17:15 17:25至18:10",
               info: res.data.data[this.week]["4"][this.day]["0"]
             },
             {
               name: "9 - 10节",
-              time: "19:30至21:10",
+              time: "19:30至20:15 20:25至21:10",
               info: res.data.data[this.week]["5"][this.day]["0"]
             }
           ];

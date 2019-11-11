@@ -35,6 +35,7 @@
 
       <el-button style="margin-top: 10px;Width:100%;" @click="onop()" type="primary" round>查询课程</el-button>
       <el-button style="margin-top: 10px;Width:100%;" @click="onopkc()" type="primary" round>已选课程</el-button>
+      <el-button style="margin-top: 10px;Width:100%;" @click="creadit()" type="primary" round>学分查询</el-button>
       <el-button style="margin-top: 10px;Width:100%;" @click="onabout()" type="primary" round>关于</el-button>
     </el-card>
 
@@ -130,6 +131,9 @@ export default {
 
     onabout() {
       window.location.href = "/About";
+    },
+    creadit() {
+      window.location.href = "/Creadit";
     },
 
     handleClose(done) {

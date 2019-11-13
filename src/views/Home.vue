@@ -13,24 +13,29 @@
       <div slot="header" class="clearfix">
         <p style="float: left;margin-top: 4px;">{{ ttime }}</p>
         <div>
-          <el-badge v-if="this.updatet2 == 'true'" style="folat:right;padding:0;" value="new" class="item">
+          <el-badge
+            v-if="this.updatet2 == 'true'"
+            style="folat:right;padding:0;"
+            value="new"
+            class="item"
+          >
             <el-button @click="update()" size="small">APP更新</el-button>
           </el-badge>
-        
-        <!-- <el-button @click="logout" style="float: right;line-hight:24px;" type="small">登出</el-button> -->
-        <el-dropdown trigger="click" style="float: right;padding:0;margin-top: 4px;">
-          <span class="el-dropdown-link">
-            菜单
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </span>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="dialogFormVisible = true">修改密码</el-dropdown-item>
-            <el-dropdown-item @click.native="logout">注销</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+
+          <!-- <el-button @click="logout" style="float: right;line-hight:24px;" type="small">登出</el-button> -->
+          <el-dropdown trigger="click" style="float: right;padding:0;margin-top: 4px;">
+            <span class="el-dropdown-link">
+              菜单
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item @click.native="dialogFormVisible = true">修改密码</el-dropdown-item>
+              <el-dropdown-item @click.native="logout">注销</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
-      <el-alert title="一言" type="success" :description="hitokoto"></el-alert>
+      <!-- <el-alert title="一言" type="success" :description="hitokoto"></el-alert> -->
       <!-- <el-alert title="有兴趣的可以加入群聊~ 909660554" type="success"></el-alert> -->
 
       <el-button style="margin-top: 10px;Width:100%;" @click="onop()" type="primary" round>查询课程</el-button>
@@ -39,15 +44,7 @@
       <el-button style="margin-top: 10px;Width:100%;" @click="onabout()" type="primary" round>关于</el-button>
     </el-card>
 
-    <!-- <el-card class="box-card">
-      <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=862573883&auto=0&height=66"></iframe>
-    </el-card> -->
-
     <el-card class="box-card">
-      <!-- <div slot="header" class="clearfix">
-        <span>{{ ttime }}</span>
-        <el-button @click="logout" style="float: right; padding: 0 0;line-hight:24px;" type="text">登出</el-button>
-      </div>-->
       <div v-for="(value,key) of infolist" :key="key" class="text">{{key}}：{{value}}</div>
     </el-card>
 
@@ -72,8 +69,9 @@
 </template>
 
 <script>
+import {getUserInfo,changePasswd} from '@/plugins/api/request';
 export default {
-  inject: ["update","login","relogin"],
+  inject: ["update"],
   name: "home",
   /* eslint-disable */
   data() {
@@ -104,8 +102,7 @@ export default {
 
     this.roll = [
       {
-        img:
-          "https://gelink.kilins.com/imgs/11.jpg"
+        img: "https://gelink.kilins.com/imgs/11.jpg"
       },
       {
         img: "https://gelink.kilins.com/imgs/11.jpg"
@@ -118,7 +115,7 @@ export default {
     this.gettime();
     /* eslint-disable */
     //console.log(this.infolisti);
-    this.getuserinfo();
+    this.getinfo();
   },
   methods: {
     onop() {
@@ -174,64 +171,46 @@ export default {
     },
 
     change_passwd() {
-      if(!this.form.old_passwd){
+      if (!this.form.old_passwd) {
         this.$notify.error({
-              title: "错误",
-              message: "请输入旧密码!"
+          title: "错误",
+          message: "请输入旧密码!"
         });
-      }else{
-        if(!this.form.new_passwd){
+      } else {
+        if (!this.form.new_passwd) {
           this.$notify.error({
-              title: "错误",
-              message: "请输入新密码!"
+            title: "错误",
+            message: "请输入新密码!"
           });
-        }else{
-          if(this.form.new_passwd != this.form.reNew_passwd){
+        } else {
+          if (this.form.new_passwd != this.form.reNew_passwd) {
             this.$notify.error({
-                title: "错误",
-                message: "两次输入密码不一致！"
+              title: "错误",
+              message: "两次输入密码不一致！"
             });
-          }else{
-            this.axios({
-              method: "post",
-              url: "https://gelinapi.kilins.com/gbh/edu",
-              data: {
-                argv: {
-                  new_passwd: this.form.new_passwd,
-                  old_passwd: this.form.old_passwd,
-                  reNew_passwd: this.form.reNew_passwd
-                },
-                cookie:
-                  localStorage.getItem("cookie_key") +
-                  " " +
-                  localStorage.getItem("cookie"),
-                  func: "change_passwd",
-                version: "1.1.18"
-              },
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-              }
-            }).then(res => {
-              if (res.data.status == 2) {
-                this.$notify({
-                  message: res.data.msg,
-                  type: "success"
-                });
-                this.dialogFormVisible = false;
-                this.logout();
-              } else {
-                this.$notify.error({
-                  title: "错误",
-                  message: res.data.msg
-                });
-              }
-            });
+          } else {
+            changePasswd({"new_passwd": this.form.new_passwd, "old_passwd": this.form.old_passwd, "reNew_passwd": this.form.reNew_passwd})
+              .then(res => {
+                if (res.data.status == 2) {
+                  this.$notify({
+                    message: res.data.msg,
+                    type: "success"
+                  });
+                  this.dialogFormVisible = false;
+                  this.logout();
+                } else {
+                  this.$notify.error({
+                    title: "错误",
+                    message: res.data.msg
+                  });
+                }
+              });
           }
         }
       }
     },
 
-    getuserinfo() {
+    getinfo() {
       if (!localStorage.getItem("UID")) {
         window.location.href = "/Login";
       } else {
@@ -241,31 +220,15 @@ export default {
           //todo
         }
       }
-      this.axios({
-        methods: "get",
-        url: "https://v1.hitokoto.cn/"
-      }).then(res => {
-        this.hitokoto = res.data.hitokoto;
-      });
+      // this.axios({
+      //   methods: "get",
+      //   url: "https://v1.hitokoto.cn/"
+      // }).then(res => {
+      //   this.hitokoto = res.data.hitokoto;
+      // });
 
-      this.axios({
-        method: "post",
-        // url: "https://gelinapi.kilins.com/gbh/login",
-        // data: {
-        //       argv: { username: localStorage.getItem("UID"), password: localStorage.getItem("Password") },
-        //       func: "login",
-        //       version: "1.1.18"
-        //     },
-        //data: {identity: "student", password: localStorage.getItem("Password"), type: "init_login", username: localStorage.getItem("UID"), version: "1.1.18" },
-        url: "https://gelinapi.kilins.com/gbh/edu",
-        data: {"func":"info","cookie":localStorage.getItem("cookie_key") +" " +localStorage.getItem("cookie"),"argv":{},"version":"1.1.18"},
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(res => {
-        /* eslint-disable */
-
-        console.log(res);
+      getUserInfo()
+      .then(res => {
         if (res.data.status == 1) {
           this.$notify.error({
             title: "错误",
@@ -282,26 +245,26 @@ export default {
             type: "success"
           });
         }
-        if (res.data.status == 4){
-          this.$message.error(res.data.msg+'正在重新登入，请稍等。');
-          this.relogin();
+        if (res.data.status == 4) {
+          this.$message.error(res.data.msg + "正在重新登入，请稍等。");
+          this.allLogin();
         }
-          this.name = res.data.data.姓名;
-          //this.id = res.data.data.学号;
-          this.infolist = res.data.data;
-          this.$forceUpdate();
-          this.loading = false;
-          //localStorage.setItem("cookie_key", res.data.cookie_key);
-          //localStorage.setItem("cookie", res.data.cookie);
-          //localStorage.setItem("bind_status", res.data.bind_status);
-          //localStorage.setItem("openid", res.data.openid);
-        }
-      );
+        this.name = res.data.data.姓名;
+        //this.id = res.data.data.学号;
+        this.infolist = res.data.data;
+        this.$forceUpdate();
+        this.loading = false;
+        //localStorage.setItem("cookie_key", res.data.cookie_key);
+        //localStorage.setItem("cookie", res.data.cookie);
+        //localStorage.setItem("bind_status", res.data.bind_status);
+        //localStorage.setItem("openid", res.data.openid);
+      });
     },
 
     logout() {
       localStorage.clear();
-      window.location.href = "/Login";
+      window.location.reload();
+      //window.location.href = "/Login";
     }
   }
 };

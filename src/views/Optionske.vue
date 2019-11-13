@@ -28,8 +28,8 @@
 </template>
 
 <script>
+import { getOptTwo } from '@/plugins/api/request';
 export default {
-  inject: ["relogin"],
   name: "option-ke",
   data() {
     return {
@@ -46,22 +46,8 @@ export default {
 
   methods: {
     getop() {
-      this.axios({
-        method: "post",
-        url: "https://gelinapi.kilins.com/gbh/edu",
-        data: {
-          func: "course_table",
-          cookie:
-            localStorage.getItem("cookie_key") +
-            " " +
-            localStorage.getItem("cookie"),
-          argv: { type: "option" },
-          version: "1.1.18"
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(res => {
+      getOptTwo()
+      .then(res => {
         /* eslint-disable */
 
         console.log(res);
@@ -87,7 +73,7 @@ export default {
         }
         if (res.data.status == 4) {
           this.$message.error(res.data.msg+'正在重新登入，请稍等。');
-          this.relogin();
+          this.allLogin();
           // setTimeout(() => {
           //   window.location.href = "/";
           // }, 3000);

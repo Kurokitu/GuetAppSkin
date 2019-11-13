@@ -5,7 +5,7 @@
     </div>-->
 
     <el-card class="box-card">
-      <h4>您只需输入您的学号和密码</h4>
+      <h4>授权您的学号登入桂北课表（桂北汇）</h4>
       <el-button @click="onabout()" type="text">查看关于</el-button>
     </el-card>
 
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+//import {allLogin} from '@/plugins/loginsdk'
 export default {
   name: "login",
   data: function() {
@@ -43,6 +44,7 @@ export default {
     onabout() {
       window.location.href = "/About";
     },
+
     getStuts() {
       if (!localStorage.getItem("UID")) {
         //todo
@@ -54,6 +56,7 @@ export default {
         }
       }
     },
+
     postlogin() {
       if (!this.id) {
         this.$notify.error({
@@ -69,96 +72,10 @@ export default {
         } else {
           localStorage.setItem("UID", this.id);
           localStorage.setItem("Password", this.password);
-
-          this.axios({
-            method: "post",
-            url: "https://gelinapi.kilins.com/gbh/login",
-            data: {
-              argv: { username: this.id, password: this.password },
-              func: "login",
-              version: "1.1.18"
-            },
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
-          }).then(res => {
-            if (res.status == 200) {
-              /* eslint-disable */
-
-              console.log(res);
-              if (res.data.status == 1) {
-                this.$notify.error({
-                  title: "错误",
-                  message: "学号或密码不正确！"
-                });
-                localStorage.removeItem("UID");
-                localStorage.removeItem("Password");
-              }
-              if (res.data.status == 2) {
-                localStorage.setItem("cookie_key", res.data.cookie_key);
-                localStorage.setItem("cookie", res.data.cookie);
-                window.location.href = "/";
-              }
-            } else {
-              this.$notify.error({
-                title: "错误",
-                message: "无法连接，网络可能有问题"
-              });
-            }
-          });
+          this.allLogin();
         }
       }
     }
   }
 };
 </script>
-
-<style scoped>
-.login-logo {
-  text-align: center;
-  width: 100%;
-  margin-top: 50px;
-}
-
-.login-title {
-  width: 100%;
-  text-align: center;
-  font-size: 24px;
-  margin-top: 20px;
-}
-
-.login-form-box {
-  width: 100%;
-}
-
-.login-form-input {
-  width: 80%;
-  margin: 20px auto;
-  line-height: 80px;
-}
-
-.login-form-input input {
-  width: 100%;
-  height: 40px;
-}
-
-.login-form-input .sinfo {
-  font-size: 12px;
-  color: #f00;
-}
-
-.login-form-bnt {
-  margin: 0 auto;
-  width: 100%;
-  text-align: center;
-}
-
-.login-form-bnt .i-el-button {
-  width: 80%;
-}
-
-.box-card h1 {
-  line-height: 100px;
-  text-align: center;
-}
-</style>>

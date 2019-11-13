@@ -48,8 +48,8 @@
 </template>
 
 <script>
+import { getCoures } from '@/plugins/api/request';
 export default {
-  inject: ["relogin"],
   name: "Coures",
   data() {
     return {
@@ -60,7 +60,6 @@ export default {
   },
   mounted() {
     this.autoget();
-    //this.getdata();
     this.weekoptions = [
       {
         week: "1",
@@ -204,22 +203,8 @@ export default {
     },
 
     autoget() {
-      this.axios({
-        method: "post",
-        url: "https://gelinapi.kilins.com/gbh/edu",
-        data: {
-          func: "course_table",
-          cookie:
-            localStorage.getItem("cookie_key") +
-            " " +
-            localStorage.getItem("cookie"),
-          argv: { type: "get_new_table", term: this.$route.params.t },
-          version: "1.1.18"
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(res => {
+      getCoures(this.$route.params.t)
+      .then(res => {
         /* eslint-disable */
 
         console.log(res);
@@ -235,8 +220,6 @@ export default {
         if (res.data.status == 2) {
           this.weeksele = "" + res.data.data.toweek;
           localStorage.setItem("toweek", "" + res.data.data.toweek);
-          /* eslint-disable */
-          //console.log(this.inday);
           this.$forceUpdate();
 
           if (!this.weeksele) {
@@ -262,11 +245,7 @@ export default {
             title: "错误",
             message: res.data.msg+'正在重新登入，请稍等。'
           });
-          this.relogin();
-          //this.autoget();
-          // setTimeout(() => {
-          //   window.location.href = "/";
-          // }, 3000);
+          this.allLogin();
         }
       });
     },
@@ -292,22 +271,8 @@ export default {
     },
 
     getdata() {
-      this.axios({
-        method: "post",
-        url: "https://gelinapi.kilins.com/gbh/edu",
-        data: {
-          func: "course_table",
-          cookie:
-            localStorage.getItem("cookie_key") +
-            " " +
-            localStorage.getItem("cookie"),
-          argv: { type: "get_new_table", term: this.$route.params.t },
-          version: "1.1.18"
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(res => {
+      getCoures(this.$route.params.t)
+      .then(res => {
         /* eslint-disable */
 
         console.log(res);
@@ -321,7 +286,6 @@ export default {
           }, 3000);
         }
         if (res.data.status == 2) {
-          //this.week = res.data.data.toweek;
           this.week = this.weeksele;
           this.day = this.daysele;
           this.$notify({
@@ -329,8 +293,6 @@ export default {
             type: "success"
           });
           /* eslint-disable */
-
-          //console.log(res.data.data[16]['1']['4']['0']);
           this.one = [
             {
               name: "1 - 2节",
@@ -365,11 +327,7 @@ export default {
         }
         if (res.data.status == 4) {
           this.$message.error(res.data.msg+'正在重新登入，请稍等。');
-          this.relogin();
-          //this.autoget();
-          // setTimeout(() => {
-          //   window.location.href = "/";
-          // }, 3000);
+          this.allLogin();
         }
       });
     }

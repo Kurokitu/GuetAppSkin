@@ -28,8 +28,8 @@
 </template>
 
 <script>
+import { getOptOne } from '@/plugins/api/request';
 export default {
-  inject: ["relogin"],
   name: "option-kc",
   data() {
     return {
@@ -46,22 +46,8 @@ export default {
 
   methods: {
     getop() {
-      this.axios({
-        method: "post",
-        url: "https://gelinapi.kilins.com/gbh/edu",
-        data: {
-          func: "selected",
-          cookie:
-            localStorage.getItem("cookie_key") +
-            " " +
-            localStorage.getItem("cookie"),
-          argv: { type: "option" },
-          version: "1.1.18"
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(res => {
+      getOptOne()
+      .then(res => {
         /* eslint-disable */
 
         console.log(res);
@@ -79,7 +65,6 @@ export default {
             message: res.data.msg,
             type: "success"
           });
-          //this.oplist = res.data.data;
           localStorage.setItem("oplistkc", JSON.stringify(res.data.data));
           this.oplist = JSON.parse(localStorage.getItem("oplistkc"));
           this.opvalue = JSON.parse(localStorage.getItem("oplistkc"))[1].termCode;
@@ -87,10 +72,7 @@ export default {
         }
         if (res.data.status == 4) {
           this.$message.error(res.data.msg+'正在重新登入，请稍等。');
-          this.relogin();
-          // setTimeout(() => {
-          //   window.location.href = "/";
-          // }, 3000);
+          this.allLogin();
         }
       });
     },

@@ -1,18 +1,23 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import './assets/css/home.css';
 import VueProgressBar from 'vue-progressbar'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+//import axios from 'axios'
+//import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router'
-import { showLoading, hideLoading } from './plugins/loading'
+import { Service } from '@/plugins/api/Service'
+import allLogin from '@/plugins/loginsdk'
+//import { showLoading, hideLoading } from './plugins/loading'
 
+Vue.prototype.$axios = Service;
+Vue.use(allLogin);
 Vue.use(ElementUI);
 Vue.config.productionTip = false
-Vue.use(VueAxios,axios);
-Vue.use(showLoading);
-Vue.use(hideLoading);
+//Vue.use(VueAxios,axios);
+//Vue.use(showLoading);
+//Vue.use(hideLoading);
 
 const options = {
   color: '#ffffff',

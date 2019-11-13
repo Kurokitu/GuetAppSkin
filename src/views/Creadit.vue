@@ -16,8 +16,8 @@
 </template>
 
 <script>
+import { getCreadit } from '@/plugins/api/request';
 export default {
-  inject: ["relogin"],
   name: "Creadit",
   data() {
     return {
@@ -31,22 +31,8 @@ export default {
   },
   methods: {
     autoget() {
-      this.axios({
-        method: "post",
-        url: "https://gelinapi.kilins.com/gbh/edu",
-        data: {
-          func: "creadit",
-          cookie:
-            localStorage.getItem("cookie_key") +
-            " " +
-            localStorage.getItem("cookie"),
-          argv: {},
-          version: "1.1.18"
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(res => {
+      getCreadit()
+        .then(res => {
         /* eslint-disable */
 
         console.log(res);
@@ -87,7 +73,7 @@ export default {
             title: "错误",
             message: res.data.msg+'正在重新登入，请稍等。'
           });
-          this.relogin;
+          this.allLogin();
           // setTimeout(() => {
           //   window.location.href = "/";
           // }, 3000);

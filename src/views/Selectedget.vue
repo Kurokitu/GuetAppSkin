@@ -16,8 +16,8 @@
 </template>
 
 <script>
+import { getSeled } from '@/plugins/api/request';
 export default {
-  inject: ["relogin"],
   name: "Seled",
   data() {
     return {
@@ -31,22 +31,8 @@ export default {
   },
   methods: {
     autoget() {
-      this.axios({
-        method: "post",
-        url: "https://gelinapi.kilins.com/gbh/edu",
-        data: {
-          func: "selected",
-          cookie:
-            localStorage.getItem("cookie_key") +
-            " " +
-            localStorage.getItem("cookie"),
-          argv: { type: "get", term: this.$route.params.t },
-          version: "1.1.18"
-        },
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      }).then(res => {
+      getSeled(this.$route.params.t)
+      .then(res => {
         /* eslint-disable */
 
         console.log(res);
@@ -74,11 +60,9 @@ export default {
               num: this.indata[i]["5"]
             });
           }
-          //this.one = this.newarray;
           localStorage.setItem("seleget", JSON.stringify(this.newarray));
           this.one = JSON.parse(localStorage.getItem("seleget"));
           this.$forceUpdate();
-          //console.log(this.newarray);
           this.$forceUpdate();
         }
         if (res.data.status == 4) {
@@ -86,10 +70,7 @@ export default {
             title: "错误",
             message: res.data.msg+'正在重新登入，请稍等。'
           });
-          this.relogin;
-          // setTimeout(() => {
-          //   window.location.href = "/";
-          // }, 3000);
+          this.allLogin();
         }
       });
     }

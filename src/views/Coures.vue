@@ -38,7 +38,7 @@
         </el-select>
       </el-col>
 
-      <el-table :data="this.one" :row-class-name="tableRowClassName" style="width: 100%">
+      <el-table :data="this.one" style="width: 100%">
         <el-table-column prop="name" label="课时" width="auto"></el-table-column>
         <el-table-column prop="time" label="时间" width="auto"></el-table-column>
         <el-table-column prop="info" label="信息" width="auto"></el-table-column>
@@ -185,22 +185,6 @@ export default {
     }
   },
   methods: {
-    tableRowClassName({ rowIndex }) {
-      if (rowIndex === 0) {
-        return "warning-row";
-      } else if (rowIndex === 1) {
-        return "success-row";
-      }else if (rowIndex === 2) {
-        return "warning-row";
-      }else if (rowIndex === 3) {
-        return "success-row";
-      }else if (rowIndex === 4) {
-        return "warning-row";
-      }else if (rowIndex === 5) {
-        return "warning-row";
-      }
-      return "";
-    },
 
     autoget() {
       getCoures(this.$route.params.t)

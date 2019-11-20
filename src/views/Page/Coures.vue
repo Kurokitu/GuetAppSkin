@@ -9,9 +9,9 @@
       <el-col :span="12">
         <el-select
           style="float: left;"
-          v-model="toweek"
+          v-model="weeksele"
           placeholder="请选择周数"
-          @change="getcdata"
+          @change="getweeksele()"
         >
           <el-option
             v-for="itemw in this.weekoptions"
@@ -25,9 +25,9 @@
       <el-col :span="12">
         <el-select
           style="float: left;"
-          v-model="today"
+          v-model="daysele"
           placeholder="请选择星期"
-          @change="getcdata"
+          @change="getweeksele()"
         >
           <el-option
             v-for="itemd in this.dayoptions"
@@ -48,177 +48,272 @@
 </template>
 
 <script>
-//import { getCoures } from "@/plugins/api/request";
+import { getCoures } from '@/plugins/api/request';
 export default {
   name: "Coures",
   data() {
     return {
       one: [],
-      weekoptions: [
-        {
-          week: "1",
-          wlabel: "第一周"
-        },
-        {
-          week: "2",
-          wlabel: "第二周"
-        },
-        {
-          week: "3",
-          wlabel: "第三周"
-        },
-        {
-          week: "4",
-          wlabel: "第四周"
-        },
-        {
-          week: "5",
-          wlabel: "第五周"
-        },
-        {
-          week: "6",
-          wlabel: "第六周"
-        },
-        {
-          week: "7",
-          wlabel: "第七周"
-        },
-        {
-          week: "8",
-          wlabel: "第八周"
-        },
-        {
-          week: "9",
-          wlabel: "第九周"
-        },
-        {
-          week: "10",
-          wlabel: "第十周"
-        },
-        {
-          week: "11",
-          wlabel: "第十一周"
-        },
-        {
-          week: "12",
-          wlabel: "第十二周"
-        },
-        {
-          week: "13",
-          wlabel: "第十三周"
-        },
-        {
-          week: "14",
-          wlabel: "第十四周"
-        },
-        {
-          week: "15",
-          wlabel: "第十五周"
-        },
-        {
-          week: "16",
-          wlabel: "第十六周"
-        },
-        {
-          week: "17",
-          wlabel: "第十七周"
-        },
-        {
-          week: "18",
-          wlabel: "第十八周"
-        },
-        {
-          week: "19",
-          wlabel: "第十九周"
-        },
-        {
-          week: "20",
-          wlabel: "第二十周"
-        }
-      ],
-      dayoptions: [
-        {
-          day: "0",
-          dlabel: "星期一"
-        },
-        {
-          day: "1",
-          dlabel: "星期二"
-        },
-        {
-          day: "2",
-          dlabel: "星期三"
-        },
-        {
-          day: "3",
-          dlabel: "星期四"
-        },
-        {
-          day: "4",
-          dlabel: "星期五"
-        },
-        {
-          day: "5",
-          dlabel: "星期六"
-        },
-        {
-          day: "6",
-          dlabel: "星期日"
-        }
-      ],
-      toweek: "",
-      today: "",
-      daysele: "",
-      weeksele: ""
+      weekoptions: [],
+      week: ""
     };
   },
   mounted() {
-    this.getcdata();
-    //console.log(this.daysele);
+    this.autoget();
+    this.weekoptions = [
+      {
+        week: "1",
+        wlabel: "第一周"
+      },
+      {
+        week: "2",
+        wlabel: "第二周"
+      },
+      {
+        week: "3",
+        wlabel: "第三周"
+      },
+      {
+        week: "4",
+        wlabel: "第四周"
+      },
+      {
+        week: "5",
+        wlabel: "第五周"
+      },
+      {
+        week: "6",
+        wlabel: "第六周"
+      },
+      {
+        week: "7",
+        wlabel: "第七周"
+      },
+      {
+        week: "8",
+        wlabel: "第八周"
+      },
+      {
+        week: "9",
+        wlabel: "第九周"
+      },
+      {
+        week: "10",
+        wlabel: "第十周"
+      },
+      {
+        week: "11",
+        wlabel: "第十一周"
+      },
+      {
+        week: "12",
+        wlabel: "第十二周"
+      },
+      {
+        week: "13",
+        wlabel: "第十三周"
+      },
+      {
+        week: "14",
+        wlabel: "第十四周"
+      },
+      {
+        week: "15",
+        wlabel: "第十五周"
+      },
+      {
+        week: "16",
+        wlabel: "第十六周"
+      },
+      {
+        week: "17",
+        wlabel: "第十七周"
+      },
+      {
+        week: "18",
+        wlabel: "第十八周"
+      },
+      {
+        week: "19",
+        wlabel: "第十九周"
+      },
+      {
+        week: "20",
+        wlabel: "第二十周"
+      }
+    ];
+    this.dayoptions = [
+      {
+        day: "1",
+        dlabel: "星期一"
+      },
+      {
+        day: "2",
+        dlabel: "星期二"
+      },
+      {
+        day: "3",
+        dlabel: "星期三"
+      },
+      {
+        day: "4",
+        dlabel: "星期四"
+      },
+      {
+        day: "5",
+        dlabel: "星期五"
+      },
+      {
+        day: "6",
+        dlabel: "星期六"
+      },
+      {
+        day: "7",
+        dlabel: "星期日"
+      }
+    ];
 
-    // //获取当前周
-    // if (!localStorage.getItem("toweek")&&!localStorage.getItem("today")) {
-    //   window.location.href="/";
-    // }else{
-    //   // this.toweek = localStorage.getItem("toweek");
-    //   // this.today = localStorage.getItem("today")-1;
-    //   this.$forceUpdate()
-    // }
+    //获取当前星期几
+    this.darr = new Array("7", "1", "2", "3", "4", "5", "6");
+    this.couday = new Date().getDay();
+    this.daysele = this.darr[this.couday];
+
+    //获取当前周
+    if (!localStorage.getItem("toweek")) {
+      this.weeksele = localStorage.getItem("toweek");
+      this.$forceUpdate();
+    }
   },
   methods: {
-    getcdata() {
-      console.log(localStorage.getItem("toweek"));
-      this.toweek = localStorage.getItem("toweek");
-      this.today = localStorage.getItem("today");
-      this.cdatause = JSON.parse(localStorage.getItem("cdata"));
-      this.one = [
-        {
-          name: "1 - 2节",
-          time: "8:25至9:10 - 9:20至10:05",
-          info: this.cdatause[this.toweek][this.today]["0"]
-        },
-        {
-          name: "3 - 4节",
-          time: "10:25至11:10 11:20至12:05",
-          info: this.cdatause[this.toweek][this.today]["1"]
-        },
-        {
-          name: "5 - 6节",
-          time: "14:30至15:15 15:25至16:10",
-          info: this.cdatause[this.toweek][this.today]["2"]
-        },
-        {
-          name: "7 - 8节",
-          time: "16:30至17:15 17:25至18:10",
-          info: this.cdatause[this.toweek][this.today]["3"]
-        },
-        {
-          name: "9 - 10节",
-          time: "19:30至20:15 20:25至21:10",
-          info: this.cdatause[this.toweek][this.today]["4"]
+
+    autoget() {
+      getCoures(this.$route.params.t)
+      .then(res => {
+        /* eslint-disable */
+
+        console.log(res);
+        if (res.data.status == 1) {
+          this.$notify.error({
+            title: "错误",
+            message: "拉取列表失败"
+          });
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 3000);
         }
-      ];
-      this.$forceUpdate();
+        if (res.data.status == 2) {
+          this.weeksele = "" + res.data.data.toweek;
+          localStorage.setItem("toweek", "" + res.data.data.toweek);
+          this.$forceUpdate();
+
+          if (!this.weeksele) {
+            this.$notify.error({
+              title: "错误",
+              message: "请选择周数！"
+            });
+            this.$forceUpdate();
+          } else {
+            if (!this.daysele) {
+              this.$notify.error({
+                title: "错误",
+                message: "请选择星期！"
+              });
+              this.$forceUpdate();
+            } else {
+              this.getdata();
+            }
+          }
+        }
+        if (res.data.status == 4) {
+          this.$notify.error({
+            title: "错误",
+            message: res.data.msg+'正在重新登入，请稍等。'
+          });
+          this.allLogin();
+        }
+      });
+    },
+
+    getweeksele() {
+      if (!this.weeksele) {
+        this.$notify.error({
+          title: "错误",
+          message: "请选择周数！"
+        });
+        this.$forceUpdate();
+      } else {
+        if (!this.daysele) {
+          this.$notify.error({
+            title: "错误",
+            message: "请选择星期！"
+          });
+          this.$forceUpdate();
+        } else {
+          this.getdata();
+        }
+      }
+    },
+
+    getdata() {
+      getCoures(this.$route.params.t)
+      .then(res => {
+        /* eslint-disable */
+
+        console.log(res);
+        if (res.data.status == 1) {
+          this.$notify.error({
+            title: "错误",
+            message: "拉取列表失败"
+          });
+          setTimeout(() => {
+            window.location.href = "/";
+          }, 3000);
+        }
+        if (res.data.status == 2) {
+          this.week = this.weeksele;
+          this.day = this.daysele;
+          this.$notify({
+            message: res.data.msg,
+            type: "success"
+          });
+          /* eslint-disable */
+          this.one = [
+            {
+              name: "1 - 2节",
+              time: "8:25至9:10 - 9:20至10:05",
+              info: res.data.data[this.week]["1"][this.day]["0"]
+            },
+            {
+              name: "3 - 4节",
+              time: "10:25至11:10 11:20至12:05",
+              info: res.data.data[this.week]["2"][this.day]["0"]
+            },
+            {
+              name: "5 - 6节",
+              time: "14:30至15:15 15:25至16:10",
+              info: res.data.data[this.week]["3"][this.day]["0"]
+            },
+            {
+              name: "7 - 8节",
+              time: "16:30至17:15 17:25至18:10",
+              info: res.data.data[this.week]["4"][this.day]["0"]
+            },
+            {
+              name: "9 - 10节",
+              time: "19:30至20:15 20:25至21:10",
+              info: res.data.data[this.week]["5"][this.day]["0"]
+            }
+          ];
+          /* eslint-disable */
+
+          console.log(this.one);
+          this.$forceUpdate();
+        }
+        if (res.data.status == 4) {
+          this.$message.error(res.data.msg+'正在重新登入，请稍等。');
+          this.allLogin();
+        }
+      });
     }
   }
 };
@@ -244,4 +339,5 @@ export default {
 .el-table .success-row {
   background: #f0f9eb;
 }
+</style>
 </style>

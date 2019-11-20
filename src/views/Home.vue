@@ -40,18 +40,23 @@
       </div>
       <!-- <el-alert title="一言" type="success" :description="hitokoto"></el-alert> -->
       <!-- <el-alert title="有兴趣的可以加入群聊~ 909660554" type="success"></el-alert> -->
-
-      <el-button style="margin-top: 10px;Width:100%;" @click="onop()" type="primary" round>查询课程</el-button>
+      <el-row :gutter="20">
+        <el-col :span="6"><div @click="onop()" class="grid-content bg-purple bt"><i class="el-icon-date"></i><div class="t">课程表</div></div></el-col>
+        <el-col :span="6"><div @click="onopkc()" class="grid-content bg-purple bt"><i class="el-icon-collection-tag"></i><div class="t">已选课</div></div></el-col>
+        <el-col :span="6"><div @click="creadit()" class="grid-content bg-purple bt"><i class="el-icon-star-off"></i><div class="t">查学分</div></div></el-col>
+        <el-col :span="6"><div @click="onabout()" class="grid-content bg-purple bt"><i class="el-icon-question"></i><div class="t">关于</div></div></el-col>
+      </el-row>
+      <!-- <el-button style="margin-top: 10px;Width:100%;" @click="onop()" type="primary" round>查询课程</el-button>
       <el-button style="margin-top: 10px;Width:100%;" @click="onopkc()" type="primary" round>已选课程</el-button>
       <el-button style="margin-top: 10px;Width:100%;" @click="creadit()" type="primary" round>学分查询</el-button>
-      <el-button style="margin-top: 10px;Width:100%;" @click="onabout()" type="primary" round>关于</el-button>
+      <el-button style="margin-top: 10px;Width:100%;" @click="onabout()" type="primary" round>关于</el-button> -->
     </el-card>
 
     <el-card class="box-card">
       <div slot="header" class="clearfix">
       {{ city }}天气
       </div>
-      当前温度：{{ temp }} --
+      当前温度：{{ temp }}℃ --
       天气：{{ weather }}<br />
       风向：{{ wd }} --
       湿度：{{ humidity }}
@@ -292,6 +297,26 @@ export default {
   top: 0;
 }
 
+.bt{
+  text-align: center;
+  height: 60px;
+  cursor: pointer;
+}
+
+.bt i{
+  color: #ffffff;
+  margin: 0 auto;
+  margin-top: 10px;
+  position: relative;
+  font-size: 24px;
+}
+
+.bt .t{
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+}
+
 .transition-box {
   margin-bottom: 10px;
   width: 200px;
@@ -361,13 +386,13 @@ export default {
   border-radius: 4px;
 }
 .bg-purple-dark {
-  background: #99a9bf;
+  background: #409eff;
 }
 .bg-purple {
-  background: #d3dce6;
+  background: #409eff;
 }
 .bg-purple-light {
-  background: #e5e9f2;
+  background: #409eff;
 }
 .grid-content {
   border-radius: 4px;

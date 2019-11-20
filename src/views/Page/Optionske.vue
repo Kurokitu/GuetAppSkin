@@ -88,9 +88,10 @@ export default {
           message: "请选择要查询的数据！"
         });
       } else {
-        this.$router.push({
-          path: "/Coures/" + this.opvalue
-        });
+        this.getcouresdata(this.opvalue);
+        // this.$router.push({
+        //   path: "/Coures/"
+        // });
       }
     }
   }

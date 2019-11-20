@@ -3,19 +3,21 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/home.css';
 import VueProgressBar from 'vue-progressbar'
-//import axios from 'axios'
-//import VueAxios from 'vue-axios'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import App from './App.vue'
 import router from './router'
 import { Service } from '@/plugins/api/Service'
 import allLogin from '@/plugins/loginsdk'
+import getcouresdata from '@/plugins/couresdata';
 //import { showLoading, hideLoading } from './plugins/loading'
 
 Vue.prototype.$axios = Service;
 Vue.use(allLogin);
+Vue.use(getcouresdata);
 Vue.use(ElementUI);
 Vue.config.productionTip = false
-//Vue.use(VueAxios,axios);
+Vue.use(VueAxios,axios);
 //Vue.use(showLoading);
 //Vue.use(hideLoading);
 

@@ -14,8 +14,8 @@
 
       <div class="login-form-box">
         <div class="login-form-input">
-          <el-input type="number" v-model="id" placeholder="学号"></el-input>
-          <el-input type="password" v-model="password" placeholder="密码"></el-input>
+          <el-input type="number" v-model="id" placeholder="学号" @keyup.enter.native="postlogin()"></el-input>
+          <el-input type="password" v-model="password" placeholder="密码" @keyup.enter.native="postlogin()"></el-input>
         </div>
 
         <div class="login-form-bnt">

@@ -2,11 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
-import Optionske from '@/views/Optionske.vue'
-import Optionskc from '@/views/Optionskc.vue'
-import Coures from '@/views/Coures.vue'
-import iSelectedget from '@/views/Selectedget.vue'
-import Creadit from '@/views/Creadit.vue'
+import Optionske from '@/views/Page/Optionske.vue'
+import Optionskc from '@/views/Page/Optionskc.vue'
+import Coures from '@/views/Page/Coures.vue'
+import iSelectedget from '@/views/Page/Selectedget.vue'
+import Creadit from '@/views/Page/Creadit.vue'
 
 Vue.use(Router)
 
@@ -34,7 +34,7 @@ export default new Router({
       component: Optionskc
     },
     {
-      path: '/Coures/:t',
+      path: '/Coures',
       name: 'Coures',
       component: Coures
     },

@@ -1,14 +1,17 @@
 <template>
-  <div v-loading="loading" class="home">
+  <div class="home">
     <!-- <div class="home-logo">
       <img alt="logo" src="../assets/Guet_logo.svg">
     </div>-->
 
-    <el-carousel trigger="click" height="200px">
+    <!-- <el-carousel trigger="click" height="200px">
       <el-carousel-item v-for="item in roll" :key="item">
         <img width="100%" :src="item.img" alt="img" />
       </el-carousel-item>
-    </el-carousel>
+    </el-carousel> -->
+
+    <img width="100%" height="200px" alt="band" src="@/assets/img/band.jpg">
+
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <p style="float: left;margin-top: 4px;">{{ ttime }}</p>
@@ -45,7 +48,21 @@
     </el-card>
 
     <el-card class="box-card">
-      <div v-for="(value,key) of infolist" :key="key" class="text">{{key}}：{{value}}</div>
+      <div slot="header" class="clearfix">
+      {{ city }}天气
+      </div>
+      当前温度：{{ temp }} --
+      天气：{{ weather }}<br />
+      风向：{{ wd }} --
+      湿度：{{ humidity }}
+    </el-card>
+
+    <el-card class="box-card">
+      <el-collapse>
+        <el-collapse-item title="个人信息" name="1">
+          <div v-for="(value,key) of infolist" :key="key" class="text">{{key}}：{{value}}</div>
+        </el-collapse-item>
+      </el-collapse>
     </el-card>
 
     <el-dialog title="修改密码" :visible.sync="dialogFormVisible">
@@ -76,13 +93,15 @@ export default {
   /* eslint-disable */
   data() {
     return {
+      infolist: [],
       ttime: "",
+      city: "",
+      temp: "",
+      weather: "",
+      wd: "",
+      humidity: "",
       name: "Null",
       id: "Null",
-      infolist: "",
-      statusinfo: "",
-      hitokoto: "",
-      roll: [],
       updatet2: "",
       dialogFormVisible: false,
       form: {
@@ -94,23 +113,32 @@ export default {
         resource: "",
         desc: ""
       },
-      formLabelWidth: "120px"
+      formLabelWidth: "120px",
+      activeNames: ['0']
     };
   },
   mounted() {
-    this.updatet2 = localStorage.getItem("updatet2");
-
-    this.roll = [
-      {
-        img: "https://gelink.kilins.com/imgs/11.jpg"
-      },
-      {
-        img: "https://gelink.kilins.com/imgs/11.jpg"
-      },
-      {
-        img: "https://gelink.kilins.com/imgs/11.jpg"
+    this.axios({
+      url: "https://api.help.bj.cn/apis/weather/?id=101301301",
+      method: 'get'
+    }).then(res=>{
+      if(res.data.status == 0){
+        this.city = res.data.city;//城市
+        this.temp= res.data.temp;
+        this.weather = res.data.weather;
+        this.wd = res.data.wd+res.data.wdforce;//风向
+        this.humidity = res.data.humidity;//湿度
       }
-    ];
+      console.log(res);
+    });
+
+    //获取当前星期几
+    this.darr = new Array("7", "1", "2", "3", "4", "5", "6");
+    this.couday = new Date().getDay();
+    this.daysele = localStorage.setItem("today", this.darr[this.couday]);
+
+    this.updatet2 = localStorage.getItem("updatet2");
+    
     this.hour = new Date().getHours();
     this.gettime();
     /* eslint-disable */
@@ -133,19 +161,7 @@ export default {
       window.location.href = "/Creadit";
     },
 
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
-
     gettime() {
-      //this.hour= this.Date.getHours();
-      /* eslint-disable */
-
-      //console.log(this.hour);
       if (this.hour >= 0) {
         this.ttime = "同学凌晨好！";
       }
@@ -220,12 +236,6 @@ export default {
           //todo
         }
       }
-      // this.axios({
-      //   methods: "get",
-      //   url: "https://v1.hitokoto.cn/"
-      // }).then(res => {
-      //   this.hitokoto = res.data.hitokoto;
-      // });
 
       getUserInfo()
       .then(res => {
@@ -249,22 +259,14 @@ export default {
           this.$message.error(res.data.msg + "正在重新登入，请稍等。");
           this.allLogin();
         }
-        this.name = res.data.data.姓名;
-        //this.id = res.data.data.学号;
         this.infolist = res.data.data;
         this.$forceUpdate();
-        this.loading = false;
-        //localStorage.setItem("cookie_key", res.data.cookie_key);
-        //localStorage.setItem("cookie", res.data.cookie);
-        //localStorage.setItem("bind_status", res.data.bind_status);
-        //localStorage.setItem("openid", res.data.openid);
       });
     },
 
     logout() {
       localStorage.clear();
       window.location.reload();
-      //window.location.href = "/Login";
     }
   }
 };
@@ -351,9 +353,9 @@ export default {
 
 .el-row {
   margin-bottom: 20px;
-  &:last-child {
+  /* &:last-child {
     margin-bottom: 0;
-  }
+  } */
 }
 .el-col {
   border-radius: 4px;

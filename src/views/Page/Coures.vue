@@ -9,9 +9,9 @@
       <el-col :span="12">
         <el-select
           style="float: left;"
-          v-model="this.toweek"
+          v-model="toweek"
           placeholder="请选择周数"
-          @change="getcdata()"
+          @change="getcdata"
         >
           <el-option
             v-for="itemw in this.weekoptions"
@@ -25,9 +25,9 @@
       <el-col :span="12">
         <el-select
           style="float: left;"
-          v-model="this.today"
+          v-model="today"
           placeholder="请选择星期"
-          @change="getcdata()"
+          @change="getcdata"
         >
           <el-option
             v-for="itemd in this.dayoptions"
@@ -176,9 +176,6 @@ export default {
     this.getcdata();
     //console.log(this.daysele);
 
-    this.toweek = localStorage.getItem("toweek");
-    this.today = localStorage.getItem("today");
-
     // //获取当前周
     // if (!localStorage.getItem("toweek")&&!localStorage.getItem("today")) {
     //   window.location.href="/";
@@ -190,41 +187,35 @@ export default {
   },
   methods: {
     getcdata() {
+      console.log(localStorage.getItem("toweek"));
+      this.toweek = localStorage.getItem("toweek");
+      this.today = localStorage.getItem("today");
+      this.cdatause = JSON.parse(localStorage.getItem("cdata"));
       this.one = [
         {
           name: "1 - 2节",
           time: "8:25至9:10 - 9:20至10:05",
-          info: JSON.parse(localStorage.getItem("cdata"))[this.toweek][this.today][
-            "0"
-          ]
+          info: this.cdatause[this.toweek][this.today]["0"]
         },
         {
           name: "3 - 4节",
           time: "10:25至11:10 11:20至12:05",
-          info: JSON.parse(localStorage.getItem("cdata"))[this.toweek][this.today][
-            "1"
-          ]
+          info: this.cdatause[this.toweek][this.today]["1"]
         },
         {
           name: "5 - 6节",
           time: "14:30至15:15 15:25至16:10",
-          info: JSON.parse(localStorage.getItem("cdata"))[this.toweek][this.today][
-            "2"
-          ]
+          info: this.cdatause[this.toweek][this.today]["2"]
         },
         {
           name: "7 - 8节",
           time: "16:30至17:15 17:25至18:10",
-          info: JSON.parse(localStorage.getItem("cdata"))[this.toweek][this.today][
-            "3"
-          ]
+          info: this.cdatause[this.toweek][this.today]["3"]
         },
         {
           name: "9 - 10节",
           time: "19:30至20:15 20:25至21:10",
-          info: JSON.parse(localStorage.getItem("cdata"))[this.toweek][this.today][
-            "4"
-          ]
+          info: this.cdatause[this.toweek][this.today]["4"]
         }
       ];
       this.$forceUpdate();

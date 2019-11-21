@@ -131,6 +131,7 @@ class APIResult {}
 class LoginCall extends APICall, APITool {
     constructor(username, password){
         this.setRequestPath('/gbh/login');
+        this.setFunction('login');
         this.addArguments({
             'username': username,
             'password': password

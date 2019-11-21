@@ -1,3 +1,5 @@
+/* eslint-disable no-this-before-super */
+/* eslint-disable constructor-super */
 const DEFVERSION = "1.1.18";
 
 let COOKIE_CALLBACK = null;
@@ -21,7 +23,7 @@ class UserCookie {
     toObject(){
         return {
             cookieKey: this.cookieKey,
-            cookie: cookie
+            cookie: this.cookie
         };
     }
 
@@ -114,7 +116,7 @@ class APICall {
 }
 
 
-class APITool {
+class APICallMixture extends APICall{
     isStatus(response, status){
         return this.getStatus(response) == status;
     }
@@ -128,7 +130,7 @@ class APITool {
 class APIResult {}
 
 
-class LoginCall extends APICall, APITool {
+class LoginCall extends APICallMixture {
     constructor(username, password){
         this.setRequestPath('/gbh/login');
         this.setFunction('login');
@@ -168,8 +170,62 @@ class LoginResult extends APIResult {
 }
 
 
-class UserInfoCall extends APICall, APITool {
-    constructor(userCookie){}
+class UserInfoCall extends APICallMixture {
+    constructor(){
+        this.setFunction('info');
+    }
+
+    postprocessor(response){
+        return new Promise((resolve) => {
+            resolve(UserInfoResult.fromChineseKeyObject(response.data.data));
+        });
+    }
+}
+
+
+class UserInfoResult extends APICallMixture {
+    constructor({id, name, gender, phoneNumber, grade, discipline, classId, nation, flatId, type}){
+        this.id = id;
+        this.name = name;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.grade = grade;
+        this.discipline = discipline;
+        this.classId = classId;
+        this.nation = nation;
+        this.flatId = flatId;
+        this.type = type;
+    }
+
+    static fromChineseKeyObject(obj){
+        return new UserInfoResult({
+            id: obj['学号'],
+            name: obj['姓名'],
+            gender: obj['性别'],
+            phoneNumber: obj['联系电话'],
+            grade: obj['年级'],
+            discipline: obj['专业'],
+            classId: obj['班级'],
+            nation: obj['民族'],
+            flatId: obj['宿舍号'],
+            type: obj['学生类型'],
+        });
+    }
+
+    toObject(){
+        return {
+            id: this.id,
+            name: this.name,
+            gender: this.gender,
+            phoneNumber: this.phoneNumber,
+            grade: this.grade,
+            discipline: this.discipline,
+            classId: this.classId,
+            nation: this.nation,
+            flatId: this.flatId,
+            type: this.type,
+        };
+    }
 }
 
 
@@ -178,5 +234,7 @@ export default {
     APICall,
     APIResult,
     LoginCall,
-    LoginResult
+    LoginResult,
+    UserInfoCall,
+    UserInfoResult
 };

@@ -173,7 +173,7 @@ class UserInfoCall extends APICall, APITool {
 }
 
 
-export {
+export default {
     setCookieCallback,
     APICall,
     APIResult,

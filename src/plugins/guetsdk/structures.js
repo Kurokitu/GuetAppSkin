@@ -112,7 +112,7 @@ class APICall {
 
 class APITool {
     isStatus(response, status){
-        return this.getStatus() == status;
+        return this.getStatus(response) == status;
     }
 
     getStatus(response){

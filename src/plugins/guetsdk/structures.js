@@ -92,7 +92,11 @@ class APICall {
     }
 
     getPostprocessor(){
-        return this.postprocessor !== undefined ? this.postprocessor : null;
+        return this.postprocessor !== undefined ? this.postprocessor : this._defaultPostprocessor;
+    }
+
+    _defaultPostprocessor(response){
+        return response;
     }
 
     makeAxiosRequest(){

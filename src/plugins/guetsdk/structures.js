@@ -153,7 +153,7 @@ class LoginCall extends APICallMixture {
                     )
                 );
             } else if (this.isStatus(response, 1)){
-                reject(this);
+                reject(new errors.UnknownException(response.data.msg));
             }
         });
     }
@@ -251,7 +251,7 @@ class ChangePasswordCall extends APICallMixture {
         if (this.isStatus(response, 2)){
             return new ChangePasswordResult();
         } else {
-            throw response.data.msg;
+            throw new errors.UnknownException(response.data.msg);
         }
     }
 }
@@ -273,7 +273,7 @@ class GetCreditCall extends APICallMixture {
             }
             return new GetCreditResult(creditInstances);
         } else if (this.isStatus(response, 1)){
-            throw new errors.UnknownException(response);
+            throw new errors.UnknownException(response.data.msg);
         } else if (this.isStatus(response, 4)){
             throw new errors.CookieInvalidException();
         }

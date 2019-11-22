@@ -282,10 +282,10 @@ class GetCreditCall extends APICallMixture {
 
 
 class CourseCredit {
-    constructor({typeName, required, all, currentGot}){
+    constructor({typeName, required, max, currentGot}){
         this.typeName = typeName;
         this.required = required;
-        this.all = all;
+        this.max = max;
         this.currentGot = currentGot;
     }
 

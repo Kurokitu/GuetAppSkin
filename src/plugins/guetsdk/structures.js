@@ -126,6 +126,18 @@ class APICallMixture extends APICall{
     getStatus(response){
         return response.data.status;
     }
+
+    isOk(response){
+        return (response.status == 200) && this.isStatus(response, 2);
+    }
+
+    handleCommonError(response){
+        if (this.isStatus(response, 4)){
+            throw new errors.CookieInvalidException();
+        } else if (this.isStatus(response, 1)){
+            throw new errors.UnknownException(response.data.msg);
+        }
+    }
 }
 
 
@@ -307,6 +319,50 @@ class GetCreditResult extends APIResult {
 }
 
 
+class GetTermsCall extends APICallMixture {
+    constructor(){
+        this.setFunction('selected');
+        this.addArguments({
+            type: 'option'
+        });
+    }
+
+    async postprocessor(response){
+        if (this.isOk(response)){
+            let termInstances = [];
+            for (let termObj of response.data.data){
+                termInstances.push(Term.fromDataObject(termObj));
+            }
+            return new GetTermsResult(termInstances);
+        } else {
+            this.handleCommonError(response);
+        }
+    }
+}
+
+
+class GetTermsResult extends APIResult {
+    constructor(terms){
+        this.terms = terms;
+    }
+}
+
+
+class Term {
+    constructor({code, name}){
+        this.code = code;
+        this.name = name;
+    }
+
+    static fromDataObject({termCode, termName}){
+        return new Term({
+            code: termCode,
+            name: termName
+        });
+    }
+}
+
+
 export default {
     setCookieCallback,
     APICall,
@@ -320,4 +376,7 @@ export default {
     CourseCredit,
     GetCreditCall,
     GetCreditResult,
+    GetTermsCall,
+    GetTermsResult,
+    Term,
 };

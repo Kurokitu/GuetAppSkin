@@ -260,7 +260,7 @@ class ChangePasswordCall extends APICallMixture {
     }
 
     async postprocessor(response){
-        if (this.isStatus(response, 2)){
+        if (this.isOk(response)){
             return new ChangePasswordResult();
         } else {
             throw new errors.UnknownException(response.data.msg);
@@ -278,17 +278,13 @@ class GetCreditCall extends APICallMixture {
     }
 
     async postprocessor(response){
-        if (this.isStatus(response, 2)){
+        if (this.isOk(response)){
             let creditInstances = [];
             for (let creditsArray of response.data.data){
                 creditInstances.push(CourseCredit.fromArray(creditsArray));
             }
             return new GetCreditResult(creditInstances);
-        } else if (this.isStatus(response, 1)){
-            throw new errors.UnknownException(response.data.msg);
-        } else if (this.isStatus(response, 4)){
-            throw new errors.CookieInvalidException();
-        }
+        } else this.handleCommonError(response);
     }
 }
 

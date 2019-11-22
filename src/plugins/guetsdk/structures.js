@@ -359,6 +359,57 @@ class Term {
 }
 
 
+class GetSelectedClassCall extends APICallMixture {
+    constructor(termCode){
+        this.setFunction('selected');
+        this.addArguments({
+            type: 'get',
+            term: termCode
+        });
+    }
+
+    async postprocessor(response){
+        if (this.isOk(response)){
+            let selClassIns = [];
+            for (let selClassArray of response.data.data){
+                selClassIns.push(SelectedClass.fromDataArray(selClassArray));
+                return new GetSelectedClassResult(selClassIns);
+            }
+        } else this.handleCommonError(response);
+    }
+}
+
+
+class GetSelectedClassResult extends APIResult {
+    constructor(selectedClass){
+        this.selectedClass = selectedClass;
+    }
+}
+
+
+class SelectedClass {
+    constructor({id, name, type, teacherName, credit, finished}){
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.teacherName = teacherName;
+        this.credit = credit;
+        this.finished = finished;
+    }
+
+    static fromDataArray(arr){
+        return new SelectedClass({
+            id: arr[0],
+            name: arr[1],
+            type: arr[2],
+            teacherName: arr[4],
+            credit: Number.parseFloat(arr[5]),
+            finished: arr[6] == "未结算"? false : true
+        });
+    }
+}
+
+
 export default {
     setCookieCallback,
     APICall,
@@ -375,4 +426,7 @@ export default {
     GetTermsCall,
     GetTermsResult,
     Term,
+    GetSelectedClassCall,
+    GetSelectedClassResult,
+    SelectedClass,
 };

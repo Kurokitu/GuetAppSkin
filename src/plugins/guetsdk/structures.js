@@ -229,6 +229,35 @@ class UserInfoResult extends APICallMixture {
 }
 
 
+class ChangePasswordCall extends APICallMixture {
+    constructor(oldPassword, newPassowrd){
+        this.oldPassword = oldPassword;
+        this.newPassowrd = newPassowrd;
+        this.setFunction('change_passwd');
+        this.addArguments(this.makeArguments());
+    }
+
+    makeArguments(){
+        return {
+            "new_passwd": this.newPassowrd,
+            "reNew_passwd": this.newPassowrd,
+            "old_passwd": this.oldPassword,
+        };
+    }
+
+    async postprocessor(response){
+        if (this.isStatus(response, 2)){
+            return new ChangePasswordResult();
+        } else {
+            throw response.data.msg;
+        }
+    }
+}
+
+
+class ChangePasswordResult extends APIResult{}
+
+
 export default {
     setCookieCallback,
     APICall,
@@ -236,5 +265,7 @@ export default {
     LoginCall,
     LoginResult,
     UserInfoCall,
-    UserInfoResult
+    UserInfoResult,
+    ChangePasswordCall,
+    ChangePasswordResult,
 };

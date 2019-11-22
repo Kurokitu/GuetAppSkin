@@ -1,3 +1,5 @@
+import errors from './errors';
+
 /* eslint-disable no-this-before-super */
 /* eslint-disable constructor-super */
 const DEFVERSION = "1.1.18";
@@ -258,6 +260,53 @@ class ChangePasswordCall extends APICallMixture {
 class ChangePasswordResult extends APIResult{}
 
 
+class GetCreditCall extends APICallMixture {
+    constructor(){
+        this.setFunction('creadit');
+    }
+
+    async postprocessor(response){
+        if (this.isStatus(response, 2)){
+            let creditInstances = [];
+            for (let creditsArray of response.data.data){
+                creditInstances.push(CourseCredit.fromArray(creditsArray));
+            }
+            return new GetCreditResult(creditInstances);
+        } else if (this.isStatus(response, 1)){
+            throw new errors.UnknownException(response);
+        } else if (this.isStatus(response, 4)){
+            throw new errors.CookieInvalidException();
+        }
+    }
+}
+
+
+class CourseCredit {
+    constructor({typeName, required, all, currentGot}){
+        this.typeName = typeName;
+        this.required = required;
+        this.all = all;
+        this.currentGot = currentGot;
+    }
+
+    static fromArray(arr){
+        return new CourseCredit({
+            typeName: arr[0],
+            required: arr[1],
+            all: arr[2],
+            currentGot: arr[3]
+        });
+    }
+}
+
+
+class GetCreditResult extends APIResult {
+    constructor(courseCredits){
+        this.courseCredits = courseCredits;
+    }
+}
+
+
 export default {
     setCookieCallback,
     APICall,
@@ -268,4 +317,7 @@ export default {
     UserInfoResult,
     ChangePasswordCall,
     ChangePasswordResult,
+    CourseCredit,
+    GetCreditCall,
+    GetCreditResult,
 };

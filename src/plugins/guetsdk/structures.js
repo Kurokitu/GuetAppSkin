@@ -440,6 +440,7 @@ let reshapeBadCourseTable = (t) => {
             reshaped[day][courseIndex] = classInfo;
         });
     });
+    return courses;
 };
 
 

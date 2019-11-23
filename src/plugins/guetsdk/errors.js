@@ -1,12 +1,12 @@
 
 
-class GUETException extends Error {}
+export class GUETException extends Error {}
 
 
-class CookieInvalidException extends GUETException {}
+export class CookieInvalidException extends GUETException {}
 
 
-class UnknownException extends GUETException {
+export class UnknownException extends GUETException {
     constructor(reason){
         super();
         this.reason = reason;

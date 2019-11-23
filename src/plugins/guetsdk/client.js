@@ -10,7 +10,7 @@ let userInfoResult = await client.send(new UserInfoCall());
 // GUETClient can automatically add 'cookie' field in method send() after login
 ````
 */
-class GUETClient {
+export class GUETClient {
     constructor(){
         this.userCookie = null;
     }

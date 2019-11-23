@@ -8,11 +8,11 @@ let COOKIE_CALLBACK = null;
 
 const DEFAULT_REQUEST_PATH = '/gbh/edu';
 
-let setCookieCallback = function(callback){
+export let setCookieCallback = function(callback){
     COOKIE_CALLBACK = callback;
 };
 
-class UserCookie {
+export class UserCookie {
     constructor(cookieKey, cookie){
         this.cookieKey = cookieKey;
         this.cookie = cookie;
@@ -38,7 +38,7 @@ class UserCookie {
     }
 }
 
-class APICall {
+export class APICall {
     setFunction(target){
         this.function = target;
     }
@@ -141,10 +141,10 @@ class APICallMixture extends APICall{
 }
 
 
-class APIResult {}
+export class APIResult {}
 
 
-class LoginCall extends APICallMixture {
+export class LoginCall extends APICallMixture {
     constructor(username, password){
         this.setRequestPath('/gbh/login');
         this.setFunction('login');
@@ -172,7 +172,7 @@ class LoginCall extends APICallMixture {
 }
 
 
-class LoginResult extends APIResult {
+export class LoginResult extends APIResult {
     constructor(cookieKey, cookie){
         this.cookieKey = cookieKey;
         this.cookie = cookie;
@@ -184,7 +184,7 @@ class LoginResult extends APIResult {
 }
 
 
-class UserInfoCall extends APICallMixture {
+export class UserInfoCall extends APICallMixture {
     constructor(){
         this.setFunction('info');
     }
@@ -197,7 +197,7 @@ class UserInfoCall extends APICallMixture {
 }
 
 
-class UserInfoResult extends APICallMixture {
+export class UserInfoResult extends APICallMixture {
     constructor({id, name, gender, phoneNumber, grade, discipline, classId, nation, flatId, type}){
         this.id = id;
         this.name = name;
@@ -243,7 +243,7 @@ class UserInfoResult extends APICallMixture {
 }
 
 
-class ChangePasswordCall extends APICallMixture {
+export class ChangePasswordCall extends APICallMixture {
     constructor(oldPassword, newPassowrd){
         this.oldPassword = oldPassword;
         this.newPassowrd = newPassowrd;
@@ -269,10 +269,10 @@ class ChangePasswordCall extends APICallMixture {
 }
 
 
-class ChangePasswordResult extends APIResult{}
+export class ChangePasswordResult extends APIResult{}
 
 
-class GetCreditCall extends APICallMixture {
+export class GetCreditCall extends APICallMixture {
     constructor(){
         this.setFunction('creadit');
     }
@@ -289,7 +289,7 @@ class GetCreditCall extends APICallMixture {
 }
 
 
-class CourseCredit {
+export class CourseCredit {
     constructor({typeName, required, max, currentGot}){
         this.typeName = typeName;
         this.required = required;
@@ -308,14 +308,14 @@ class CourseCredit {
 }
 
 
-class GetCreditResult extends APIResult {
+export class GetCreditResult extends APIResult {
     constructor(courseCredits){
         this.courseCredits = courseCredits;
     }
 }
 
 
-class GetTermsCall extends APICallMixture {
+export class GetTermsCall extends APICallMixture {
     constructor(){
         this.setFunction('selected');
         this.addArguments({
@@ -337,14 +337,14 @@ class GetTermsCall extends APICallMixture {
 }
 
 
-class GetTermsResult extends APIResult {
+export class GetTermsResult extends APIResult {
     constructor(terms){
         this.terms = terms;
     }
 }
 
 
-class Term {
+export class Term {
     constructor({code, name}){
         this.code = code;
         this.name = name;
@@ -359,7 +359,7 @@ class Term {
 }
 
 
-class GetSelectedClassCall extends APICallMixture {
+export class GetSelectedClassCall extends APICallMixture {
     constructor(termCode){
         this.setFunction('selected');
         this.addArguments({
@@ -380,14 +380,14 @@ class GetSelectedClassCall extends APICallMixture {
 }
 
 
-class GetSelectedClassResult extends APIResult {
+export class GetSelectedClassResult extends APIResult {
     constructor(selectedClass){
         this.selectedClass = selectedClass;
     }
 }
 
 
-class SelectedClass {
+export class SelectedClass {
     constructor({id, name, type, teacherName, credit, finished}){
         this.id = id;
         this.name = name;
@@ -443,7 +443,7 @@ let reshapeBadCourseTable = (t) => {
 };
 
 
-class GetCourseTableCall extends APICallMixture {
+export class GetCourseTableCall extends APICallMixture {
     constructor(termCode){
         this.termCode = termCode;
         this.setFunction('course_table');
@@ -474,7 +474,7 @@ class GetCourseTableCall extends APICallMixture {
 }
 
 
-class GetCourseTableResult extends APIResult {
+export class GetCourseTableResult extends APIResult {
     constructor(toweek, courseMartix){
         this.toweek = toweek;
         this.courseMartix = courseMartix;
@@ -482,7 +482,7 @@ class GetCourseTableResult extends APIResult {
 }
 
 
-class Course {
+export class Course {
     constructor({name, teacherName}){
         this.name = name;
         this.teacherName = teacherName;

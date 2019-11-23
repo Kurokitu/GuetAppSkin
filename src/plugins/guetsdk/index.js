@@ -1,9 +1,3 @@
-import client from './client';
-import structs from './structures';
-import errors from './errors';
-
-export default {
-    ...client,
-    ...structs,
-    ...errors,
-}
+export * from './structures';
+export * from './errors';
+export * from './structures';

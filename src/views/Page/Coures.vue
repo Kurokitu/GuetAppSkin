@@ -187,6 +187,8 @@ export default {
   },
   methods: {
     getcdata() {
+      // TODO: remove console.log
+      // eslint-disable-next-line
       console.log(localStorage.getItem("toweek"));
       this.toweek = localStorage.getItem("toweek");
       this.today = localStorage.getItem("today");

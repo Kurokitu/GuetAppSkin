@@ -27,7 +27,7 @@ export default {
   mounted() {
     this.autoget();
     this.one = JSON.parse(localStorage.getItem("seleget"));
-    this.$forceUpdate();
+    
   },
   methods: {
     autoget() {
@@ -62,8 +62,6 @@ export default {
           }
           localStorage.setItem("seleget", JSON.stringify(this.newarray));
           this.one = JSON.parse(localStorage.getItem("seleget"));
-          this.$forceUpdate();
-          this.$forceUpdate();
         }
         if (res.data.status == 4) {
           this.$notify.error({

@@ -183,7 +183,7 @@ export default {
       if (this.hour >= 19) {
         this.ttime = "同学晚上好！";
       }
-      this.$forceUpdate();
+      
     },
 
     change_passwd() {
@@ -260,7 +260,7 @@ export default {
           this.allLogin();
         }
         this.infolist = res.data.data;
-        this.$forceUpdate();
+        
       });
     },
 

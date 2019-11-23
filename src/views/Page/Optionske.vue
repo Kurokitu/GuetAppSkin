@@ -41,7 +41,7 @@ export default {
 
   mounted() {
     this.getop();
-    this.$forceUpdate();
+    
   },
 
   methods: {
@@ -69,7 +69,6 @@ export default {
           localStorage.setItem("oplistke", JSON.stringify(res.data.data));
           this.oplist = JSON.parse(localStorage.getItem("oplistke"));
           this.opvalue = JSON.parse(localStorage.getItem("oplistke"))[1].value;
-          this.$forceUpdate();
         }
         if (res.data.status == 4) {
           this.$message.error(res.data.msg+'正在重新登入，请稍等。');

@@ -218,7 +218,6 @@ export default {
           info: this.cdatause[this.toweek][this.today]["4"]
         }
       ];
-      this.$forceUpdate();
     }
   }
 };

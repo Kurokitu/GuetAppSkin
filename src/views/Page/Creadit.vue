@@ -27,7 +27,6 @@ export default {
   mounted() {
     this.autoget();
     this.one = JSON.parse(localStorage.getItem("Creadit"));
-    this.$forceUpdate();
   },
   methods: {
     autoget() {
@@ -64,9 +63,7 @@ export default {
           //this.one = this.newarray;
           localStorage.setItem("Creadit", JSON.stringify(this.newarray));
           this.one = JSON.parse(localStorage.getItem("Creadit"));
-          this.$forceUpdate();
           //console.log(this.newarray);
-          this.$forceUpdate();
         }
         if (res.data.status == 4) {
           this.$notify.error({

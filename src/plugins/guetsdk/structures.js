@@ -410,6 +410,95 @@ class SelectedClass {
 }
 
 
+let object2array = (obj, startWith, endWith) => {
+    let newArray = [];
+    let pointer = -1;
+    for (let i = startWith; i <= endWith; i++){
+        pointer++;
+        newArray[pointer] = obj[i.toString()];
+    }
+    return newArray;
+};
+
+/* As you can see, I use 4 loops in this function.
+* But my goal is not to write a 'well' data transformer,
+* which is to deal in clean way with bad format, written by someone with nothing in his brain,
+* to make smart others can read.
+* -- Rubcion
+*/
+/* reshapeBadCourseTable(t)
+* `t` is a object that seems like:
+* {1:{1:[], 2:[], ..., 7:[]}, 2:{...}, 3:{...}, ..., 5:{...}}
+* Return a martix (by array) that uses 1-7 (mapped to 0-6) as the first dimension,
+* uses 1-5 (mapped to 0-4) as the second demension.
+*/
+let reshapeBadCourseTable = (t) => {
+    let reshaped = [[],[],[],[],[],[],[]];
+    let courses = object2array(t, 1, 5).map((el) => object2array(el, 1, 7));
+    courses.forEach((byDay, courseIndex) => {
+        byDay.forEach((classInfo, day) => {
+            reshaped[day][courseIndex] = classInfo;
+        });
+    });
+};
+
+
+class GetCourseTableCall extends APICallMixture {
+    constructor(termCode){
+        this.termCode = termCode;
+        this.setFunction('course_table');
+        this.addArguments({
+            type: 'get_new_table',
+            term: termCode
+        });
+    }
+
+    async postprocessor(response){
+        if (this.isOk(response)){
+            let martixByWeek = [];
+            let data = response.data.data;
+            for (let weekString of data.keys()){
+                let week = Number.parseInt(weekString);
+                if (!isNaN(week)){
+                    martixByWeek[week-1] = reshapeBadCourseTable(data[week]);
+                }
+            }
+            martixByWeek.map((courseTable) => {
+                return courseTable.map((courseInDay) => {
+                    return courseInDay.map((courseDataArray) => Course.fromDataArray(courseDataArray));
+                });
+            });
+            return new GetCourseTableResult(data.toweek, martixByWeek);
+        } else this.handleCommonError(response);
+    }
+}
+
+
+class GetCourseTableResult extends APIResult {
+    constructor(toweek, courseMartix){
+        this.toweek = toweek;
+        this.courseMartix = courseMartix;
+    }
+}
+
+
+class Course {
+    constructor({name, teacherName}){
+        this.name = name;
+        this.teacherName = teacherName;
+    }
+
+    static fromDataArray(arr){
+        let dataString = arr[1];
+        let [name, , teacherName] = dataString.split('@');
+        return new Course({
+            name: name,
+            teacherName: teacherName
+        });
+    }
+}
+
+
 export default {
     setCookieCallback,
     APICall,
@@ -429,4 +518,7 @@ export default {
     GetSelectedClassCall,
     GetSelectedClassResult,
     SelectedClass,
+    GetCourseTableCall,
+    GetCourseTableResult,
+    Course,
 };

@@ -432,7 +432,7 @@ let object2array = (obj, startWith, endWith) => {
 * Return a martix (by array) that uses 1-7 (mapped to 0-6) as the first dimension,
 * uses 1-5 (mapped to 0-4) as the second demension.
 */
-let reshapeBadCourseTable = (t) => {
+export let reshapeBadCourseTable = (t) => {
     let reshaped = [[],[],[],[],[],[],[]];
     let courses = object2array(t, 1, 5).map((el) => object2array(el, 1, 7));
     courses.forEach((byDay, courseIndex) => {

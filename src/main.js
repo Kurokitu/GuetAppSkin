@@ -9,10 +9,14 @@ import App from './App.vue';
 import router from './router';
 import '@/plugins/guetsdk';
 import vuetify from './plugins/vuetify';
+import Vuex from 'vuex';
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
+Vue.use(Vuex);
+
+import '@/store';
 
 const options = {
   color: '#ffffff',

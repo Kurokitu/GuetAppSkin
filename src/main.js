@@ -1,18 +1,18 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/home.css';
-import VueProgressBar from 'vue-progressbar'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
-import App from './App.vue'
-import router from './router'
-import '@/plugins/guetsdk'
+import VueProgressBar from 'vue-progressbar';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+import App from './App.vue';
+import router from './router';
+import '@/plugins/guetsdk';
 import vuetify from './plugins/vuetify';
 
 Vue.use(ElementUI);
-Vue.config.productionTip = false
-Vue.use(VueAxios,axios);
+Vue.config.productionTip = false;
+Vue.use(VueAxios, axios);
 
 const options = {
   color: '#ffffff',
@@ -26,12 +26,12 @@ const options = {
   autoRevert: true,
   location: 'top',
   inverse: false
-}
+};
 
-Vue.use(VueProgressBar, options)
+Vue.use(VueProgressBar, options);
 
 new Vue({
   router,
   vuetify,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

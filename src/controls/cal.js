@@ -1,19 +1,19 @@
 
-let isRuenYear = (year) => {
+export let isRuenYear = (year) => {
     return ((year % 4) == 0) && ((year % 400) != 0);
 };
 
-let getDayCountsOfMouth = (year) => {
+export let getDayCountsOfMouth = (year) => {
     return [31,isRuenYear(year)?29:28,31,30,31,30,31,31,30,31,30,31];
 };
 
-let getDayCountsOf = (year, mo) => {
+export let getDayCountsOf = (year, mo) => {
     return getDayCountsOfMouth(year)[mo-1];
 };
 
-let isCorrectMonth = mo => (mo > 0) && (mo <= 12);
+export let isCorrectMonth = mo => (mo > 0) && (mo <= 12);
 
-class YearNotSupported extends Error {}
+export class YearNotSupported extends Error {}
 
 export class Day {
     constructor(year, month, day){

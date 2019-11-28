@@ -18,7 +18,8 @@
     "vue-progressbar": "^0.7.5",
     "vue-router": "^3.0.3",
     "vuetify": "^2.1.0",
-    "vuex": "^3.1.2"
+    "vuex": "^3.1.2",
+    "zangodb": "^1.0.7"
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.7.4",

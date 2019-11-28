@@ -41,10 +41,80 @@ export class Day {
                 let newDay;
                 if (isCorrectMonth(newMo)){
                     newDay = getDayCountsOf(this.year, this.mo) + this.day;
+                } else {
+                    let newYear = this.year - 1;
+                    newMo = 12;
+                    this.year = newYear;
+                    newDay = getDayCountsOf(newYear, newMo) + this.day;
+                }
+                this.month = newMo;
+                this.day = newDay;
+            } else if (this.day > getDayCountsOf(this.year, this.mo)){
+                let newMo = this.month + 1;
+                let newDay;
+                if (isCorrectMonth(newMo)){
+                    newDay = getDayCountsOf(this.year, newMo) - this.day;
+                } else {
+                    let newYear = this.year + 1;
+                    newMo = 1;
+                    this.year = newYear;
+                    newDay = getDayCountsOf(newYear, newMo) - this.day;
                 }
                 this.month = newMo;
                 this.day = newDay;
             }
+        } else {
+            if (this.month <= 0){
+                let newYear = this.year - 1;
+                let newMonth = 12 + this.month;
+                this.year = newYear;
+                this.month = newMonth;
+            } else if (this.month > 12){
+                let newYear = this.year + 1;
+                let newMonth = this.month - 12;
+                this.year = newYear;
+                this.month = newMonth;
+            }
         }
+        if (!this.isDataRight()){
+            this.handleData();
+        }
+    }
+
+    clone(){
+        return new Day(
+            this.year,
+            this.month,
+            this.day
+        );
+    }
+
+    plus(duration){
+        let ins = this.clone();
+        ins.day += duration.durationDays;
+        if(!ins.isDataRight()) ins.handleData();
+        return ins;
+    }
+
+    subs(duration){
+        let ins = this.clone();
+        ins.day -= duration.durationDays;
+        if(!ins.isDataRight()) ins.handleData();
+        return ins;
+    }
+}
+
+
+export class DayRange {
+    constructor(start, end){
+        this.start = start;
+        this.end = end;
+    }
+}
+
+
+export class DayDuration {
+    constructor(durationDays){
+        this.durationDays = durationDays;
     }
 }

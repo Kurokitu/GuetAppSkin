@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui';
+import vuetify from './plugins/vuetify';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/home.css';
 import VueProgressBar from 'vue-progressbar';
@@ -8,7 +9,6 @@ import VueAxios from 'vue-axios';
 import App from './App.vue';
 import router from './router';
 import '@/plugins/guetsdk';
-import vuetify from './plugins/vuetify';
 import Vuex from 'vuex';
 
 Vue.use(ElementUI);

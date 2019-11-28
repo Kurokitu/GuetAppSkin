@@ -13,8 +13,7 @@ a{ text-decoration:none}
 
 .Home-Hello-av {
   float: right;
-  position: absolute;
-  top: -80px;
+  margin-top: -80px;
 }
 
 .Home-Card {

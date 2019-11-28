@@ -7,8 +7,8 @@
         <span class="white--text headline">{{ aname }}</span>
       </v-avatar>
     </div>
-    <v-card class="mx-auto Home-Card" max-width="90%" tile outlined>
-      <h3>课程（星期二）</h3>
+    <v-card class="mx-auto Home-Card elevation-2" max-width="90%" tile outlined>
+      <h3 class="v-card-title">课程（星期二）</h3>
 
       <v-divider></v-divider>
 

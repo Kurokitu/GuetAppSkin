@@ -6,7 +6,7 @@
           <v-list-item-title class="title">
             <v-avatar color="blue" size="48">
               <span class="white--text headline">X</span>
-            </v-avatar> XX
+            </v-avatar>XX
           </v-list-item-title>
           <!-- <v-list-item-subtitle>subtext</v-list-item-subtitle> -->
         </v-list-item-content>
@@ -75,9 +75,19 @@
     <v-content>
       <router-view />
     </v-content>
-    <v-footer>
-      <v-spacer></v-spacer>
-      <div>&copy; Kurokitu/Rubicon {{ new Date().getFullYear() }}</div>
+    <v-footer dark padless>
+      <v-card class="flex" flat tile>
+        <v-card-title class="teal">
+          <strong class="subheading">Go to the fucking Network Center (Guet)</strong>
+
+          <v-spacer></v-spacer>
+        </v-card-title>
+
+        <v-card-text class="py-2 white--text text-center">
+          © {{ new Date().getFullYear() }} —
+          <strong>Kurokitu / Rubicon</strong>
+        </v-card-text>
+      </v-card>
     </v-footer>
   </v-app>
 </template>

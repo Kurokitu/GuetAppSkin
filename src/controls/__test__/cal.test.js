@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { isRuenYear } from "controls/cal";
+import { isRuenYear, Day, DayDuration } from "controls/cal";
 
 describe("isRuenYear", () => {
     it("can point out 2008 is a ruen year", () => {
@@ -12,3 +12,4 @@ describe("isRuenYear", () => {
         expect(result).toBeFalsy();
     });
 });
+

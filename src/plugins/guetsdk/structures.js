@@ -2,7 +2,7 @@ import errors from './errors';
 
 /* eslint-disable no-this-before-super */
 /* eslint-disable constructor-super */
-const DEFVERSION = "1.1.18";
+const DEFVERSION = "1.1.22";
 
 let COOKIE_CALLBACK = null;
 

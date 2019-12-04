@@ -8,8 +8,10 @@
       </v-avatar>
     </div>
     <v-card class="mx-auto Home-Card elevation-2" max-width="90%" tile outlined>
-      <h3 class="v-card-title">课程（星期二）</h3>
-
+      <v-card-title>
+        <strong class="subheading">课程（星期二）</strong>
+        <v-spacer></v-spacer>
+      </v-card-title>
       <v-divider></v-divider>
 
       <v-list-item v-for="citem in cdata" :key="citem.title">
@@ -28,7 +30,7 @@ export default {
   name: "Home",
   data() {
     return {
-      name: "小王",
+      name: "测试",
       aname: "",
       cdata: [
         {
@@ -53,7 +55,7 @@ export default {
     };
   },
   mounted() {
-    this.aname = this.name.substr(0,1);
+    this.aname = this.name.substr(0, 1);
   }
 };
 </script>

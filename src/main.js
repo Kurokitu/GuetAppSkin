@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
+import store from './store';
 import ElementUI from 'element-ui';
 import vuetify from './plugins/vuetify';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -9,7 +11,7 @@ import VueAxios from 'vue-axios';
 import App from './App.vue';
 import router from './router';
 import '@/plugins/guetsdk';
-import Vuex from 'vuex';
+
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
@@ -35,6 +37,7 @@ const options = {
 Vue.use(VueProgressBar, options);
 
 new Vue({
+  store,
   router,
   vuetify,
   render: h => h(App)

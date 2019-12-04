@@ -77,12 +77,6 @@
     </v-content>
     <v-footer dark padless>
       <v-card class="flex" flat tile>
-        <v-card-title class="teal">
-          <strong class="subheading">Go to the fucking Network Center (Guet)</strong>
-
-          <v-spacer></v-spacer>
-        </v-card-title>
-
         <v-card-text class="py-2 white--text text-center">
           © {{ new Date().getFullYear() }} —
           <strong>Kurokitu / Rubicon</strong>

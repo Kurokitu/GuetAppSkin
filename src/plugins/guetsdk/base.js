@@ -12,3 +12,5 @@ export const BASECLI = axios.create({
         'Content-Type': 'application/x-www-form-urlencoded'
     }
 });
+
+export default BASECLI;

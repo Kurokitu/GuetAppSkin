@@ -1,5 +1,5 @@
-import BCLI from 'base';
-import { LoginCall } from 'structures';
+import BCLI from './base';
+import { LoginCall } from './structures';
 
 /* A Client to manage state of API
 Example:

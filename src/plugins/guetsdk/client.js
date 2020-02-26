@@ -22,6 +22,10 @@ export class GUETClient {
         });
     }
 
+    get isLogin(){
+        return this.userCookie !== null;
+    }
+
     setUserCookie(cookie){
         this.userCookie = cookie;
     }

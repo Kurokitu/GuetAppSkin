@@ -10,13 +10,14 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import App from './App.vue';
 import router from './router';
-import '@/plugins/guetsdk';
+import { GUETPlugin } from '@/plugins/guetsdk_plugin';
 
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
+Vue.use(new GUETPlugin());
 
 import '@/store';
 

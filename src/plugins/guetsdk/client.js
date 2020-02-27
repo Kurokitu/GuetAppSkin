@@ -1,6 +1,24 @@
 import BCLI from './base';
 import { LoginCall } from './structures';
 
+
+class CallbackChain {
+    constructor(){
+        this.chain = [];
+    }
+
+    push(f){
+        this.chain.push(f);
+    }
+
+    apply(arg){
+        for (let f of this.chain){
+            f.call(null, arg);
+        }
+    }
+}
+
+
 /* A Client to manage state of API
 Example:
 ````
@@ -13,6 +31,7 @@ let userInfoResult = await client.send(new UserInfoCall());
 export class GUETClient {
     constructor() {
         this.userCookie = null;
+        this.onCookieNotFoundCallback = new CallbackChain();
     }
 
     login(username, password) {
@@ -23,6 +42,9 @@ export class GUETClient {
     }
 
     get isLogin() {
+        if (this.userCookie === null){
+            this.onCookieNotFoundCallback.apply(this);
+        }
         return this.userCookie !== null;
     }
 
@@ -35,8 +57,8 @@ export class GUETClient {
     }
 
     send(call) {
-        if (this.userCookie != null) {
-            call.setUserCookie(this.userCookie);
+        if (this.isLogin) {
+            call.setCookie(this.userCookie);
         }
         return this.rawSend(call.makeAxiosRequestConfig()).then((response) => call.callPostprocessor(response));
     }
@@ -46,6 +68,12 @@ export class GUETClient {
             let cli = new GUETClient();
             cli.login(username, password).then(() => resolve(cli), (reason) => reject(reason));
         });
+    }
+
+    on(event,callback){
+        if (event == "cookie_not_found"){
+            this.onCookieNotFoundCallback.push(callback);
+        }
     }
 }
 

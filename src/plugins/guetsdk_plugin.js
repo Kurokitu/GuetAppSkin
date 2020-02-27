@@ -21,8 +21,8 @@ export const ClientHolder = new ValueHolder(new GUETClient());
 
 export class GUETPlugin {
     install(Vue){
-        Vue.prototype.$guet = (value) => {
-            if (value !== undefined || value !== null){
+        Vue.prototype.$guet = function(value) {
+            if (value !== undefined || (value !== undefined && value !== null)){
                 ClientHolder.value = value;
             }
             return ClientHolder.value;

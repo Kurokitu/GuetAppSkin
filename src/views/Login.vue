@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     validate() {
+      window.console.log(this.$guet);
       let loginState = this.$guet().login(this.id, this.password);
       window.console.log(loginState);
       // let userInfoResult = await client.send(new UserInfoCall());

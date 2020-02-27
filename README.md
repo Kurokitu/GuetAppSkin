@@ -14,7 +14,7 @@ SDK已经封装好了部分函数，可以直接调用
 GuetSDK By Rubicon L  
 
 ### Project members
-[Kurokitu](https://github.com/Kurokitu)
+[Kurokitu](https://github.com/Kurokitu)  
 [Rubicon L](https://github.com/thislight)
 
 ## Project setup

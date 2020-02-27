@@ -1,109 +1,107 @@
 import errors from './errors';
 
-/* eslint-disable no-this-before-super */
-/* eslint-disable constructor-super */
 const DEFVERSION = "1.1.22";
 
 let COOKIE_CALLBACK = null;
 
 const DEFAULT_REQUEST_PATH = '/gbh/edu';
 
-export let setCookieCallback = function(callback){
+export let setCookieCallback = function (callback) {
     COOKIE_CALLBACK = callback;
 };
 
 export class UserCookie {
-    constructor(cookieKey, cookie){
+    constructor(cookieKey, cookie) {
         this.cookieKey = cookieKey;
         this.cookie = cookie;
     }
 
-    getFullCookie(){
+    getFullCookie() {
         return `${this.cookieKey} ${this.cookie}`;
     }
 
-    toObject(){
+    toObject() {
         return {
             cookieKey: this.cookieKey,
             cookie: this.cookie
         };
     }
 
-    static fromObject({cookieKey, cookie}){
+    static fromObject({ cookieKey, cookie }) {
         return new UserCookie(cookieKey, cookie);
     }
 
-    static fromResponseDataObject({cookie_key, cookie}){
+    static fromResponseDataObject({ cookie_key, cookie }) {
         return new UserCookie(cookie_key, cookie);
     }
 }
 
 export class APICall {
-    setFunction(target){
+    setFunction(target) {
         this.function = target;
     }
 
-    getFunction(){
+    getFunction() {
         return this.function;
     }
 
-    setCookie(userCookie){
+    setCookie(userCookie) {
         this.userCookie = userCookie;
     }
 
-    getCookie(){
-        if (this.userCookie !== undefined){
+    getCookie() {
+        if (this.userCookie !== undefined) {
             return this.userCookie.getFullCookie();
-        } else if (COOKIE_CALLBACK !== null){
+        } else if (COOKIE_CALLBACK !== null) {
             return COOKIE_CALLBACK();
         } else return null;
     }
 
-    setRequestPath(requestPath){
+    setRequestPath(requestPath) {
         this.requestPath = requestPath;
     }
 
-    getRequestPath(){
+    getRequestPath() {
         if (this.requestPath !== undefined) return this.requestPath;
         return DEFAULT_REQUEST_PATH;
     }
 
-    setArguments(argv){
+    setArguments(argv) {
         this.arguments = argv;
     }
 
-    addArguments(newArgv){
+    addArguments(newArgv) {
         this.setArguments(this.getArguments());
-        for (let key of newArgv.keys()){
+        for (let key of newArgv.keys()) {
             this.arguments[key] = newArgv[key];
         }
     }
 
-    getArguments(){
+    getArguments() {
         return this.arguments !== undefined ? this.arguments : {};
     }
 
-    setRequestMethod(method){
+    setRequestMethod(method) {
         this.requestMethod = method;
     }
 
-    getRequestMethod(){
+    getRequestMethod() {
         return this.requestMethod !== undefined ? this.requestMethod : 'post';
     }
 
-    setPostprocessor(pp){
+    setPostprocessor(pp) {
         this.postprocessor = pp;
     }
 
-    getPostprocessor(){
+    getPostprocessor() {
         return this.postprocessor !== undefined ? this.postprocessor : this._defaultPostprocessor;
     }
 
-    _defaultPostprocessor(response){
+    _defaultPostprocessor(response) {
         return response;
     }
 
-    makeAxiosRequest(){
+    makeAxiosRequest() {
         return {
             url: this.getRequestPath(),
             method: this.getRequestMethod(),
@@ -118,34 +116,35 @@ export class APICall {
 }
 
 
-class APICallMixture extends APICall{
-    isStatus(response, status){
-        return this.getStatus(response) == status;
+class APICallMixture extends APICall {
+    isStatus(response, status) {
+        return this.getStatus(response) === status;
     }
 
-    getStatus(response){
+    getStatus(response) {
         return response.data.status;
     }
 
-    isOk(response){
-        return (response.status == 200) && this.isStatus(response, 2);
+    isOk(response) {
+        return (response.status === 200) && this.isStatus(response, 2);
     }
 
-    handleCommonError(response){
-        if (this.isStatus(response, 4)){
+    handleCommonError(response) {
+        if (this.isStatus(response, 4)) {
             throw new errors.CookieInvalidException();
-        } else if (this.isStatus(response, 1)){
+        } else if (this.isStatus(response, 1)) {
             throw new errors.UnknownException(response.data.msg);
         }
     }
 }
 
 
-export class APIResult {}
+export class APIResult { }
 
 
 export class LoginCall extends APICallMixture {
-    constructor(username, password){
+    constructor(username, password) {
+        super();
         this.setRequestPath('/gbh/login');
         this.setFunction('login');
         this.addArguments({
@@ -155,16 +154,16 @@ export class LoginCall extends APICallMixture {
         this.setPostprocessor(this.postprocessor);
     }
 
-    postprocessor(response){
+    postprocessor(response) {
         return new Promise((resolve, reject) => {
-            if (this.isStatus(response, 2)){
+            if (this.isStatus(response, 2)) {
                 resolve(
                     new LoginResult(
                         response.data.cookie_key,
                         response.data.cookie
                     )
                 );
-            } else if (this.isStatus(response, 1)){
+            } else if (this.isStatus(response, 1)) {
                 reject(new errors.UnknownException(response.data.msg));
             }
         });
@@ -173,23 +172,25 @@ export class LoginCall extends APICallMixture {
 
 
 export class LoginResult extends APIResult {
-    constructor(cookieKey, cookie){
+    constructor(cookieKey, cookie) {
+        super();
         this.cookieKey = cookieKey;
         this.cookie = cookie;
     }
 
-    getUserCookie(){
+    getUserCookie() {
         return UserCookie.fromObject(this);
     }
 }
 
 
 export class UserInfoCall extends APICallMixture {
-    constructor(){
+    constructor() {
+        super();
         this.setFunction('info');
     }
 
-    postprocessor(response){
+    postprocessor(response) {
         return new Promise((resolve) => {
             resolve(UserInfoResult.fromChineseKeyObject(response.data.data));
         });
@@ -198,7 +199,8 @@ export class UserInfoCall extends APICallMixture {
 
 
 export class UserInfoResult extends APICallMixture {
-    constructor({id, name, gender, phoneNumber, grade, discipline, classId, nation, flatId, type}){
+    constructor({ id, name, gender, phoneNumber, grade, discipline, classId, nation, flatId, type }) {
+        super();
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -211,7 +213,7 @@ export class UserInfoResult extends APICallMixture {
         this.type = type;
     }
 
-    static fromChineseKeyObject(obj){
+    static fromChineseKeyObject(obj) {
         return new UserInfoResult({
             id: obj['学号'],
             name: obj['姓名'],
@@ -226,7 +228,7 @@ export class UserInfoResult extends APICallMixture {
         });
     }
 
-    toObject(){
+    toObject() {
         return {
             id: this.id,
             name: this.name,
@@ -244,14 +246,15 @@ export class UserInfoResult extends APICallMixture {
 
 
 export class ChangePasswordCall extends APICallMixture {
-    constructor(oldPassword, newPassowrd){
+    constructor(oldPassword, newPassowrd) {
+        super();
         this.oldPassword = oldPassword;
         this.newPassowrd = newPassowrd;
         this.setFunction('change_passwd');
         this.addArguments(this.makeArguments());
     }
 
-    makeArguments(){
+    makeArguments() {
         return {
             "new_passwd": this.newPassowrd,
             "reNew_passwd": this.newPassowrd,
@@ -259,8 +262,8 @@ export class ChangePasswordCall extends APICallMixture {
         };
     }
 
-    async postprocessor(response){
-        if (this.isOk(response)){
+    async postprocessor(response) {
+        if (this.isOk(response)) {
             return new ChangePasswordResult();
         } else {
             throw new errors.UnknownException(response.data.msg);
@@ -269,18 +272,19 @@ export class ChangePasswordCall extends APICallMixture {
 }
 
 
-export class ChangePasswordResult extends APIResult{}
+export class ChangePasswordResult extends APIResult { }
 
 
 export class GetCreditCall extends APICallMixture {
-    constructor(){
+    constructor() {
+        super();
         this.setFunction('creadit');
     }
 
-    async postprocessor(response){
-        if (this.isOk(response)){
+    async postprocessor(response) {
+        if (this.isOk(response)) {
             let creditInstances = [];
-            for (let creditsArray of response.data.data){
+            for (let creditsArray of response.data.data) {
                 creditInstances.push(CourseCredit.fromArray(creditsArray));
             }
             return new GetCreditResult(creditInstances);
@@ -290,14 +294,14 @@ export class GetCreditCall extends APICallMixture {
 
 
 export class CourseCredit {
-    constructor({typeName, required, max, currentGot}){
+    constructor({ typeName, required, max, currentGot }) {
         this.typeName = typeName;
         this.required = required;
         this.max = max;
         this.currentGot = currentGot;
     }
 
-    static fromArray(arr){
+    static fromArray(arr) {
         return new CourseCredit({
             typeName: arr[0],
             required: arr[1],
@@ -309,24 +313,26 @@ export class CourseCredit {
 
 
 export class GetCreditResult extends APIResult {
-    constructor(courseCredits){
+    constructor(courseCredits) {
+        super();
         this.courseCredits = courseCredits;
     }
 }
 
 
 export class GetTermsCall extends APICallMixture {
-    constructor(){
+    constructor() {
+        super();
         this.setFunction('selected');
         this.addArguments({
             type: 'option'
         });
     }
 
-    async postprocessor(response){
-        if (this.isOk(response)){
+    async postprocessor(response) {
+        if (this.isOk(response)) {
             let termInstances = [];
-            for (let termObj of response.data.data){
+            for (let termObj of response.data.data) {
                 termInstances.push(Term.fromDataObject(termObj));
             }
             return new GetTermsResult(termInstances);
@@ -338,19 +344,20 @@ export class GetTermsCall extends APICallMixture {
 
 
 export class GetTermsResult extends APIResult {
-    constructor(terms){
+    constructor(terms) {
+        super();
         this.terms = terms;
     }
 }
 
 
 export class Term {
-    constructor({code, name}){
+    constructor({ code, name }) {
         this.code = code;
         this.name = name;
     }
 
-    static fromDataObject({termCode, termName}){
+    static fromDataObject({ termCode, termName }) {
         return new Term({
             code: termCode,
             name: termName
@@ -360,7 +367,8 @@ export class Term {
 
 
 export class GetSelectedClassCall extends APICallMixture {
-    constructor(termCode){
+    constructor(termCode) {
+        super();
         this.setFunction('selected');
         this.addArguments({
             type: 'get',
@@ -368,10 +376,10 @@ export class GetSelectedClassCall extends APICallMixture {
         });
     }
 
-    async postprocessor(response){
-        if (this.isOk(response)){
+    async postprocessor(response) {
+        if (this.isOk(response)) {
             let selClassIns = [];
-            for (let selClassArray of response.data.data){
+            for (let selClassArray of response.data.data) {
                 selClassIns.push(SelectedClass.fromDataArray(selClassArray));
                 return new GetSelectedClassResult(selClassIns);
             }
@@ -381,14 +389,15 @@ export class GetSelectedClassCall extends APICallMixture {
 
 
 export class GetSelectedClassResult extends APIResult {
-    constructor(selectedClass){
+    constructor(selectedClass) {
+        super();
         this.selectedClass = selectedClass;
     }
 }
 
 
 export class SelectedClass {
-    constructor({id, name, type, teacherName, credit, finished}){
+    constructor({ id, name, type, teacherName, credit, finished }) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -397,14 +406,14 @@ export class SelectedClass {
         this.finished = finished;
     }
 
-    static fromDataArray(arr){
+    static fromDataArray(arr) {
         return new SelectedClass({
             id: arr[0],
             name: arr[1],
             type: arr[2],
             teacherName: arr[4],
             credit: Number.parseFloat(arr[5]),
-            finished: arr[6] == "未结算"? false : true
+            finished: arr[6] === "未结算" ? false : true
         });
     }
 }
@@ -413,7 +422,7 @@ export class SelectedClass {
 let object2array = (obj, startWith, endWith) => {
     let newArray = [];
     let pointer = -1;
-    for (let i = startWith; i <= endWith; i++){
+    for (let i = startWith; i <= endWith; i++) {
         pointer++;
         newArray[pointer] = obj[i.toString()];
     }
@@ -433,7 +442,7 @@ let object2array = (obj, startWith, endWith) => {
 * uses 1-5 (mapped to 0-4) as the second demension.
 */
 export let reshapeBadCourseTable = (t) => {
-    let reshaped = [[],[],[],[],[],[],[]];
+    let reshaped = [[], [], [], [], [], [], []];
     let courses = object2array(t, 1, 5).map((el) => object2array(el, 1, 7));
     courses.forEach((byDay, courseIndex) => {
         byDay.forEach((classInfo, day) => {
@@ -445,7 +454,8 @@ export let reshapeBadCourseTable = (t) => {
 
 
 export class GetCourseTableCall extends APICallMixture {
-    constructor(termCode){
+    constructor(termCode) {
+        super();
         this.termCode = termCode;
         this.setFunction('course_table');
         this.addArguments({
@@ -454,14 +464,14 @@ export class GetCourseTableCall extends APICallMixture {
         });
     }
 
-    async postprocessor(response){
-        if (this.isOk(response)){
+    async postprocessor(response) {
+        if (this.isOk(response)) {
             let martixByWeek = [];
             let data = response.data.data;
-            for (let weekString of data.keys()){
+            for (let weekString of data.keys()) {
                 let week = Number.parseInt(weekString);
-                if (!isNaN(week)){
-                    martixByWeek[week-1] = reshapeBadCourseTable(data[week]);
+                if (!isNaN(week)) {
+                    martixByWeek[week - 1] = reshapeBadCourseTable(data[week]);
                 }
             }
             martixByWeek.map((courseTable) => {
@@ -476,7 +486,8 @@ export class GetCourseTableCall extends APICallMixture {
 
 
 export class GetCourseTableResult extends APIResult {
-    constructor(toweek, courseMartix){
+    constructor(toweek, courseMartix) {
+        super();
         this.toweek = toweek;
         this.courseMartix = courseMartix;
     }
@@ -484,12 +495,12 @@ export class GetCourseTableResult extends APIResult {
 
 
 export class Course {
-    constructor({name, teacherName}){
+    constructor({ name, teacherName }) {
         this.name = name;
         this.teacherName = teacherName;
     }
 
-    static fromDataArray(arr){
+    static fromDataArray(arr) {
         let dataString = arr[1];
         let [name, , teacherName] = dataString.split('@');
         return new Course({

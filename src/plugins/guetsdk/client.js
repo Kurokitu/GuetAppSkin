@@ -36,7 +36,7 @@ export class GUETClient {
 
     send(call) {
         if (this.userCookie != null) {
-            call.setUserCookie(this.userCookie);
+            call.setCookie(this.userCookie);
         }
         return this.rawSend(call.makeAxiosRequestConfig()).then((response) => call.callPostprocessor(response));
     }

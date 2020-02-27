@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
       next();
     } else {
       next({
-        name: "login",
+        name: "Login",
         params: {
           from: to.fullPath
         }

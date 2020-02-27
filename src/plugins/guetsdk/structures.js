@@ -97,6 +97,10 @@ export class APICall {
         return this.postprocessor !== undefined ? this.postprocessor : this._defaultPostprocessor;
     }
 
+    callPostprocessor(response){
+      return this.getPostprocessor().call(this,response);
+    }
+
     _defaultPostprocessor(response) {
         return response;
     }
@@ -156,16 +160,14 @@ export class LoginCall extends APICallMixture {
 
     postprocessor(response) {
         return new Promise((resolve, reject) => {
-            if (this.isStatus(response, 2)) {
+          if (this.isOk(response)) {
                 resolve(
                     new LoginResult(
                         response.data.cookie_key,
                         response.data.cookie
                     )
                 );
-            } else if (this.isStatus(response, 1)) {
-                reject(new errors.UnknownException(response.data.msg));
-            }
+          } else this.handleCommonError(response);
         });
     }
 }

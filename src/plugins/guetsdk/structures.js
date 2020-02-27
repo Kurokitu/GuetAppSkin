@@ -1,6 +1,6 @@
 import errors from './errors';
 
-const DEFVERSION = "1.1.22";
+const DEFVERSION = "1.1.26";
 
 let COOKIE_CALLBACK = null;
 
@@ -72,7 +72,7 @@ export class APICall {
 
     addArguments(newArgv) {
         this.setArguments(this.getArguments());
-        for (let key of newArgv.keys()) {
+        for (let key of Object.keys(newArgv)) {
             this.arguments[key] = newArgv[key];
         }
     }
@@ -101,7 +101,7 @@ export class APICall {
         return response;
     }
 
-    makeAxiosRequest() {
+    makeAxiosRequestConfig() {
         return {
             url: this.getRequestPath(),
             method: this.getRequestMethod(),

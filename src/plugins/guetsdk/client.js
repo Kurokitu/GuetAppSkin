@@ -11,37 +11,38 @@ let userInfoResult = await client.send(new UserInfoCall());
 ````
 */
 export class GUETClient {
-    constructor(){
+    constructor() {
         this.userCookie = null;
     }
 
-    login(username, password){
+    login(username, password) {
         return this.send(new LoginCall(username, password)).then((result) => {
             this.setUserCookie(result.getUserCookie());
             return result;
         });
     }
 
-    get isLogin(){
+    get isLogin() {
         return this.userCookie !== null;
     }
 
-    setUserCookie(cookie){
+    setUserCookie(cookie) {
         this.userCookie = cookie;
     }
 
-    rawSend(requestConfig){
+    rawSend(requestConfig) {
         return BCLI(requestConfig);
     }
 
-    send(call){
-        if (this.userCookie != null){
+    send(call) {
+        window.console.log(call);
+        if (this.userCookie != null) {
             call.setUserCookie(this.userCookie);
         }
         this.rawSend(call.makeAxiosRequestConfig()).then((response) => call.getPostprocessor()(response));
     }
 
-    static withLogin(username, password){
+    static withLogin(username, password) {
         return new Promise((resolve, reject) => {
             let cli = new GUETClient();
             cli.login(username, password).then(() => resolve(cli), (reason) => reject(reason));

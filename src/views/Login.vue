@@ -1,39 +1,47 @@
 <template>
-  <v-app id="inspire">
-    <v-content>
-          <v-col cols="12" sm="4" md="4">
-            <v-card class="elevation-12">
-              <v-toolbar color="blue" dark flat>
-                <v-toolbar-title>Login</v-toolbar-title>
-                <v-spacer />
-              </v-toolbar>
-              <v-card-text>
-                <v-form>
-                  <v-text-field label="Login" name="login" v-icon="person" type="text" />
+  <v-row>
+    <v-col>
+      <v-card class="pa-4 mx-auto">
+        <v-form v-model="valid" :lazy-validation="lazy">
+          <v-text-field type="number" v-model="id" :rules="idRules" label="学号" required></v-text-field>
 
-                  <v-text-field
-                    id="password"
-                    label="Password"
-                    name="password"
-                    v-icon="lock"
-                    type="password"
-                  />
-                </v-form>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer />
-                <v-btn color="primary">Login</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-    </v-content>
-  </v-app>
+          <v-text-field
+            v-model="password"
+            :rules="passRules"
+            label="密码"
+            required
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show1 ? 'text' : 'password'"
+            @click:append="show1 = !show1"
+          ></v-text-field>
+
+          <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate()">登入</v-btn>
+        </v-form>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
 export default {
-  props: {
-    source: String
+  name: "login",
+  data() {
+    return {
+      valid: true,
+      lazy: false,
+      show1: false,
+      id: "",
+      idRules: [v => !!v || "必须输入学号"],
+      password: "",
+      passRules: [v => !!v || "必须输入密码"]
+    };
+  },
+  methods: {
+    validate() {
+      let loginState = this.$guet.login(this.id, this.password);
+      window.console.log(loginState);
+      // let userInfoResult = await client.send(new UserInfoCall());
+    }
   }
 };
 </script>

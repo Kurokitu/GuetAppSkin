@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URI = 'https://gelinapi.kilins.com/';
+const API_BASE_URI = 'http://wx.gliet.com.cn:9028';
 
 
 export const BASECLI = axios.create({

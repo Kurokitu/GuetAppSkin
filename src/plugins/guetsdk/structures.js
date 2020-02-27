@@ -159,7 +159,7 @@ export class LoginCall extends APICallMixture {
     }
 
     postprocessor(response) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
           if (this.isOk(response)) {
                 resolve(
                     new LoginResult(

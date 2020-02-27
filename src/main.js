@@ -4,7 +4,7 @@ import store from './store';
 import vuetify from './plugins/vuetify';
 import router from './router';
 import axios from 'axios';
-import { GUETPlugin } from '@/plugins/guetsdk_plugin';
+import { ClientHolder, GUETPlugin } from '@/plugins/guetsdk_plugin';
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
@@ -13,7 +13,7 @@ Vue.use(new GUETPlugin());
 // 路由守卫
 router.beforeEach((to, from, next) => {
   if (to.meta.role === true) {//判断是否需要登录
-    if (localStorage.getItem('id')) {
+    if (ClientHolder.value.isLogin) {
       next();
     } else {
       next({

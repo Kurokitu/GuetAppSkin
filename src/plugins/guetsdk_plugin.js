@@ -1,19 +1,5 @@
+import { ValueHolder } from "@/plugins/libs/valueholder";
 import { GUETClient } from "@/plugins/guetsdk";
-
-
-class ValueHolder {
-    constructor(initalValue){
-        this._value = initalValue;
-    }
-
-    get value(){
-        return this._value;
-    }
-
-    set value(v){
-        this._value = v;
-    }
-}
 
 
 export const ClientHolder = new ValueHolder(new GUETClient());

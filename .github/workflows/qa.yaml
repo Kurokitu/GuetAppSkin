@@ -1,0 +1,31 @@
+name: QA
+on:
+  push:
+    paths:
+      - 'public/**'
+      - 'src/**'
+      - '*.config.js'
+      - 'yarn.lock'
+  pull_request:
+    paths:
+      - 'public/**'
+      - 'src/**'
+      - '*.config.js'
+      - 'yarn.lock'
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Install Dependencies
+        run: yarn
+      - name: Run Jest Tests
+        run: "yarn test"
+        env:
+          CI: true

@@ -32,6 +32,7 @@ export class GUETClient {
     constructor() {
         this.userCookie = null;
         this.onCookieNotFoundCallback = new CallbackChain();
+        this.onCookieSetCallback = new CallbackChain();
     }
 
     login(username, password) {
@@ -50,6 +51,7 @@ export class GUETClient {
 
     setUserCookie(cookie) {
         this.userCookie = cookie;
+        this.onCookieSetCallback.apply(this);
     }
 
     rawSend(requestConfig) {
@@ -73,6 +75,8 @@ export class GUETClient {
     on(event,callback){
         if (event == "cookie_not_found"){
             this.onCookieNotFoundCallback.push(callback);
+        } else if (event == "cookie_set"){
+            this.onCookieSetCallback.push(callback);
         }
     }
 }

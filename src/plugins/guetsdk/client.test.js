@@ -10,4 +10,12 @@ describe("GUETClient", () => {
         expect(x).toBe(false);
         expect(calledTimes).toBe(1);
     });
+
+    it("can hook 'cookie_set' for listening cookie was setteing", () => {
+        let mock = jest.fn();
+        let client = new GUETClient();
+        client.on("cookie_set", mock);
+        client.setUserCookie({});
+        expect(mock).toBeCalledTimes(1);
+    });
 });

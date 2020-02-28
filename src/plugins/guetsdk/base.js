@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URI = 'http://localhost:9028/';
+// const API_BASE_URI = 'http://localhost:9028/';
 
+const API_BASE_URI = process.env.VUE_APP_API_URL;
 
 export const BASECLI = axios.create({
     timeout: 7000, // 请求超时时间

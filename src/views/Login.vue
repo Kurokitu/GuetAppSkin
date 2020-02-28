@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col>
+    <v-col md="6" class="mx-auto">
       <v-card class="pa-4 mx-auto">
         <v-form v-model="valid" :lazy-validation="lazy">
           <v-text-field type="number" v-model="id" :rules="idRules" label="学号" required></v-text-field>
@@ -38,8 +38,9 @@ export default {
   },
   methods: {
     validate() {
-      let loginState = this.$guet().login(this.id, this.password);
-      window.console.log(loginState);
+      this.$guet().login(this.id, this.password).then(res => {
+        window.console.log(res);
+      });
       // let userInfoResult = await client.send(new UserInfoCall());
     }
   }

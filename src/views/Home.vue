@@ -6,7 +6,7 @@
         alt="Guet Logo"
         class="shrink mx-auto"
         contain
-        src="@/assets/Guet_logo.svg"
+        src="@/assets/gbh_logo_null_mini.png"
         transition="scale-transition"
         width="250px"
       />

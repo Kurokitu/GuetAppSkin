@@ -1,4 +1,5 @@
 <template>
+<with-app-bar>
   <div class="home">
     <v-card class="mx-auto home" elevation="0">
       <v-img
@@ -18,12 +19,20 @@
       </v-card-text>
     </v-card>
   </div>
+</with-app-bar>
 </template>
 
 <script>
 // @ is an alias to /src
 export default {
-  name: "Home"
+  name: "Home",
+  mounted(){
+    this.$guet().askLogin().then((isLogin) => {
+      if (isLogin){
+        this.$router.push({ name: 'Index' });
+      }
+    })
+  }
 };
 </script>
 

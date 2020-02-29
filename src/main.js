@@ -5,6 +5,8 @@ import vuetify from './plugins/vuetify';
 import router from './router';
 import axios from 'axios';
 import snackbar from '@/components/Snackbar/int';
+import MyAppBar from '@/components/MyAppBar';
+import WithAppBar from '@/components/WithAppBar';
 import { ClientHolder, GUETPlugin } from '@/plugins/guetsdk_plugin'; // 引入GuetSKD
 import './usersaving';
 
@@ -12,6 +14,9 @@ Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 Vue.prototype.$snackbar = snackbar;
 Vue.use(new GUETPlugin());
+
+Vue.component('my-app-bar', MyAppBar);
+Vue.component('with-app-bar', WithAppBar);
 
 /*
 *   关于GuetSDk:

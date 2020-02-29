@@ -1,4 +1,5 @@
 <template>
+<with-app-bar>
   <v-card class="pa-4 mx-auto" elevation="0">
     <strong class="display-1">你好,</strong>
     <br />
@@ -29,15 +30,25 @@
       </v-list-item>
     </v-card>
   </v-card>
+</with-app-bar>
 </template>
 
 <script>
+import { UserInfoCall } from "@/plugins/guetsdk/structures";
 export default {
-    name: "Index",
-    data() {
-        return {
-            name: null
-        }
+  name: "Index",
+  data() {
+    return {
+      name: null
+    };
+  },
+  mounted() {},
+  methods: {
+    async UserInfo() {
+      let userInfoResult = await this.$guet().client.send(new UserInfoCall());
+
+      this.name = userInfoResult.name;
     }
-}
+  }
+};
 </script>>

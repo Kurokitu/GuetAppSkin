@@ -16,6 +16,15 @@ class CallbackChain {
             f.call(null, arg);
         }
     }
+
+    applyAsync(arg){
+        let promises = [];
+        for (let f of this.chain){
+            let p = f.call(null, arg);
+            if(p) promises.push(p);
+        }
+        return Promise.all(promises);
+    }
 }
 
 
@@ -43,26 +52,38 @@ export class GUETClient {
     }
 
     get isLogin() {
-        if (this.userCookie === null){
-            this.onCookieNotFoundCallback.apply(this);
-        }
         return this.userCookie !== null;
     }
 
-    setUserCookie(cookie) {
+    async askLogin(){
+        if (!this.isLogin){
+            await this.triggerCookieNotFoundAsync();
+        }
+        return this.isLogin;
+    }
+
+    async triggerCookieNotFoundAsync(){
+        await this.onCookieNotFoundCallback.applyAsync(this);
+    }
+
+    async triggerCookieSetAsync(){
+        await this.onCookieSetCallback.applyAsync(this);
+    }
+
+    async setUserCookie(cookie) {
         this.userCookie = cookie;
-        this.onCookieSetCallback.apply(this);
+        await this.triggerCookieSetAsync();
     }
 
     rawSend(requestConfig) {
         return BCLI(requestConfig);
     }
 
-    send(call) {
-        if (this.isLogin) {
+    async send(call) {
+        if (await this.askLogin()) {
             call.setCookie(this.userCookie);
         }
-        return this.rawSend(call.makeAxiosRequestConfig()).then((response) => call.callPostprocessor(response));
+        return await this.rawSend(call.makeAxiosRequestConfig()).then((response) => call.callPostprocessor(response));
     }
 
     static withLogin(username, password) {

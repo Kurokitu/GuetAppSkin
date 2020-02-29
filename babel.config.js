@@ -2,6 +2,7 @@ module.exports = api => {
   let config = {
     presets: [],
     plugins: [
+      "@babel/plugin-transform-typescript",
       "@babel/plugin-proposal-nullish-coalescing-operator",
       "@babel/plugin-proposal-function-bind",
       "@babel/plugin-proposal-partial-application"

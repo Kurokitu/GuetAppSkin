@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const PStatus_RUN = 0;
 export const PStatus_PREPAREING = 1;
-export const PStatus_DIED = 2;
-export const PStatus_UPDATING = 3;
+export const PStatus_UPDATING = 2;
 
 export const PType_BuiltIn = 0;
 export const PType_External = 1;

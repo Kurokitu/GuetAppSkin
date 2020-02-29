@@ -28,7 +28,7 @@
         </v-list-item>
       </v-list>
 
-      <template v-if="login" v-slot:append>
+      <template v-slot:append>
         <div class="pa-2">
           <v-btn color="red" dark block>
             <strong>注销</strong>

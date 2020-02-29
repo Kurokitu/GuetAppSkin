@@ -31,17 +31,14 @@ router.beforeEach((to, from, next) => {
     if (ClientHolder.value.isLogin) {
       if (to.meta.skipIfLoggedIn === true) {
         next({
-          name: "Index",
-          params: {
-            from: to.fullPath
-          }
+          name: "Index"
         });
       } else {
         next();
       }
     } else {
       ClientHolder.value.askLogin().then((isLogin) => {
-        if (isLogin) {
+        if (isLogin === false) {
           next({
             name: "Login",
             params: {

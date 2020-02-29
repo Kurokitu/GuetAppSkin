@@ -1,6 +1,6 @@
 <template>
-<div>
-  <my-app-bar v-bind="$attrs" v-model="drawer"></my-app-bar>
+  <div>
+    <my-app-bar v-bind="$attrs" v-model="drawer"></my-app-bar>
     <v-navigation-drawer v-model="drawer" disable-resize-watcher app>
       <!-- <v-list-item>
         <v-list-item-content>
@@ -40,25 +40,25 @@
     <v-sheet id="scrolling-techniques-7" class="overflow-y-auto" max-height="100%">
       <v-content>
         <v-container fluid>
-          <slot class="page-auto"></slot>
+          <slot></slot>
         </v-container>
       </v-content>
     </v-sheet>
-</div>
+  </div>
 </template>
 
 <script>
 export default {
   inheritAttrs: true,
-  data(){
+  data() {
     return {
       drawer: false,
       items: [
         { title: "主页", icon: "mdi-home", page: "Index" },
         { title: "课程表", icon: "mdi-image", page: "Index" },
         { title: "关于", icon: "mdi-help-box", page: "About" }
-      ],
+      ]
     };
-  },
-}
+  }
+};
 </script>

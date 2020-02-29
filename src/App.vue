@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <router-view></router-view>
+    <div class="page-auto">
+      <router-view></router-view>
+    </div>
     <v-footer app></v-footer>
   </v-app>
 </template>
@@ -17,18 +19,17 @@ export default {
         { title: "关于", icon: "mdi-help-box", page: "About" }
       ],
       right: null,
-      login: true,
+      login: true
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     onToggleDrawer() {
       this.nav = !this.nav;
     }
   }
 };
-</script>>
+</script>
 
 <style>
 .page-auto {

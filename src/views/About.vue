@@ -1,7 +1,7 @@
 <template>
   <with-app-bar>
     <div class="about">
-      <v-card style="height: 120px" class="mx-auto" elevation="0">
+      <v-card style="height: 120px" class="mx-auto mt-4" elevation="0">
         <transition name="bounce">
           <v-img
             alt="Guet Logo"

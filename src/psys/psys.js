@@ -51,6 +51,7 @@ export class PluginSystem {
             let changeSet = {
                 id: plugin.id,
                 name: plugin.name,
+                packageName: plugin.packageName,
                 version: plugin.version,
             };
             if (!oldPluginInfoDoc){
@@ -112,10 +113,12 @@ export class Plugin {
     ///
     pluginMainfest({
         name,
-        packageName
+        packageName,
+        version,
     }){
         this.name = name;
         this.packageName = packageName;
+        this.version = version;
     }
 
     async hookInstall(entry){}

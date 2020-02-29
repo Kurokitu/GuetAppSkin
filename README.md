@@ -12,7 +12,7 @@ API_URL指向后端API地址，仅填写API主网址，末尾请勿添加斜杠
 修改完成后只需执行 npm run build 或 yarn build 即可，打包完成的文件在dist目录下，将dist内的所有文件上传至服务器即可  
 
 
-### 关于GuetSDk:
+### 关于GuetSDK:
 SDK已经封装好了部分函数，可以直接调用  
 详细请参考 /src/plugins/guetsdk 内的文件的注释示例以添加新的函数  
 GuetSDK By Rubicon L  

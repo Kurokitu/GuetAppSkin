@@ -4,8 +4,9 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 /* 
-*  此处说明，如需登入才能访问的页面请将 meta 的 role 值改为 true 
-*  如果路由页面的 role 值为 true 而用户未登入，将会转至Login页面
+*  此处说明，如需登入才能访问的页面请将 meta 的 requireLogin 值改为 true 
+*  如果路由页面的 requireLogin 值为 true 而用户未登入，将会转至Login页面,
+*  
 */
 
 const routes = [
@@ -14,7 +15,8 @@ const routes = [
     name: 'Home',
     component: () => import('@/views/Home.vue'),
     meta: {
-      role: false
+      requireLogin: false,
+      skipIfLoggedIn: true,
     }
   },
   {
@@ -22,7 +24,8 @@ const routes = [
     name: 'About',
     component: () => import('@/views/About.vue'),
     meta: {
-      role: false
+      requireLogin: false,
+      skipIfLoggedIn: false,
     }
   },
   {
@@ -30,7 +33,8 @@ const routes = [
     name: 'Login',
     component: () => import('@/views/Login.vue'),
     meta: {
-      role: false
+      requireLogin: false,
+      skipIfLoggedIn: true,
     }
   },
   {
@@ -38,7 +42,8 @@ const routes = [
     name: 'Index',
     component: () => import('@/views/Index.vue'),
     meta: {
-      role: true
+      requireLogin: true,
+      skipIfLoggedIn: false,
     }
   }
 ];

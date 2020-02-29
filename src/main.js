@@ -30,18 +30,24 @@ Vue.component('with-app-bar', WithAppBar);
 
 // 路由守卫
 router.beforeEach((to, from, next) => {
-  if (to.meta.role === true) {  //判断是否需要登录
+  if (to.meta.requireLogin === true) {  //判断是否需要登录
     if (ClientHolder.value.isLogin) {
-      next();
+      if (to.meta.skipIfLoggedIn === true) {
+        next({
+          name: "Index"
+        });
+      } else {
+        next();
+      }
     } else {
       ClientHolder.value.askLogin().then((isLogin) => {
-        if (isLogin){
+        if (isLogin === false) {
           next({
-        name: "Login",
-        params: {
-          from: to.fullPath
-        }
-      });
+            name: "Login",
+            params: {
+              from: to.fullPath
+            }
+          });
         } else {
           next();
         }

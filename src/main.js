@@ -4,10 +4,13 @@ import store from './store';
 import vuetify from './plugins/vuetify';
 import router from './router';
 import axios from 'axios';
+import snackbar from '@/components/Snackbar/int';
 import { ClientHolder, GUETPlugin } from '@/plugins/guetsdk_plugin'; // 引入GuetSKD
+import './usersaving';
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
+Vue.prototype.$snackbar = snackbar;
 Vue.use(new GUETPlugin());
 
 /*
@@ -23,14 +26,19 @@ router.beforeEach((to, from, next) => {
     if (ClientHolder.value.isLogin) {
       next();
     } else {
-      next({
+      ClientHolder.value.askLogin().then((isLogin) => {
+        if (isLogin){
+          next({
         name: "Login",
         params: {
           from: to.fullPath
         }
       });
+        } else {
+          next();
+        }
+      });
     }
-
   } else {
     next();
   }

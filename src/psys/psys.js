@@ -118,4 +118,7 @@ export class Plugin {
         this.name = name;
         this.packageName = packageName;
     }
+
+    async hookInstall(entry){}
+    async hookUpdate(entry,oldVersion,newVersion){}
 }

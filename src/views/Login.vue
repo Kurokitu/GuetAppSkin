@@ -37,10 +37,7 @@ export default {
     validate() {
       this.$guet()
         .login(this.id, this.password)
-        .then(res => {
-          localStorage.setItem("cookie", res.cookie);
-          localStorage.setItem("cookieKey", res.cookieKey);
-          localStorage.setItem("fullcookie", res.cookieKey + " " + res.cookie);
+        .then(() => {
           this.$snackbar.success("登入成功");
           this.$router.push("/Index");
         })
@@ -49,6 +46,15 @@ export default {
         });
       // let userInfoResult = await client.send(new UserInfoCall());
     }
+  },
+  mounted(){
+    this.$guet().askLogin().then((v) => {
+      if (v){
+        this.$router.push({
+          name:'Index'
+        });
+      }
+    });
   }
 };
 </script>

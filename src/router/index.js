@@ -38,7 +38,7 @@ const routes = [
     name: 'Index',
     component: () => import('@/views/Index.vue'),
     meta: {
-      role: false
+      role: true
     }
   }
 ];

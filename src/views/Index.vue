@@ -1,6 +1,6 @@
 <template>
   <with-app-bar>
-    <v-card class="mx-auto mb-6 pa-2" elevation="0" v-resize="onResize">
+    <v-card class="mx-auto mb-6 pa-4" elevation="0" v-resize="onResize">
       <v-carousel
         cycle
         :height="this.windowSize.x > 1024 ? 400 : 180"
@@ -15,7 +15,7 @@
       <strong class="display-1">你好,</strong>
       <br />
       <v-card-text class="pl-0">
-        <strong class="headline" style="text-align: right;">{{ name }}</strong>
+        <strong class="headline" style="text-align: right;">{{ name }} 同学</strong>
       </v-card-text>
 
       <v-card class="mx-auto mt-6" max-width="100%" tile>

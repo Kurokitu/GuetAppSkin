@@ -1,6 +1,6 @@
 module.exports = api => {
   let config = {
-    presets: [],
+    presets: ["@vue/babel-preset-jsx"],
     plugins: [
       "@babel/plugin-transform-typescript",
       "@babel/plugin-proposal-nullish-coalescing-operator",

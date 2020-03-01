@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { db } from "@/db";
+
 export default {
   name: "login",
   data() {
@@ -38,6 +40,17 @@ export default {
       this.$guet()
         .login(this.id, this.password)
         .then(() => {
+          let accountdb = db.collection("config");
+
+          let accountData = {
+            key: "account",
+            type: "t-guet-account-data",
+            value: { uid: this.id, password: this.password },
+            visible: false
+          };
+
+          accountdb.insert(accountData);
+
           this.$snackbar.success("登入成功");
           this.$router.push("/Index");
         })
@@ -47,14 +60,16 @@ export default {
       // let userInfoResult = await client.send(new UserInfoCall());
     }
   },
-  mounted(){
-    this.$guet().askLogin().then((v) => {
-      if (v){
-        this.$router.push({
-          name:'Index'
-        });
-      }
-    });
+  mounted() {
+    this.$guet()
+      .askLogin()
+      .then(v => {
+        if (v) {
+          this.$router.push({
+            name: "Index"
+          });
+        }
+      });
   }
 };
 </script>

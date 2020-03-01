@@ -3,10 +3,10 @@
     <v-card class="pa-4 mx-auto" elevation="0">
       <strong class="display-1">你好,</strong>
       <br />
-      <v-card-text class="pl-0">
+      <v-card-text class="pl-1">
         <strong class="headline" style="text-align: right;">{{ myname }} 同学</strong>
       </v-card-text>
-      <v-card-text class="pl-0">
+      <v-card-text class="pl-2">
         <p>ID: {{ myid }}</p>
         <p>班级: {{ myclass }}</p>
       </v-card-text>
@@ -78,8 +78,10 @@ export default {
 
     async Course() {
       await this.$guet()
-        .send(new GetCourseTableCall(20192))
+        .send(new GetCourseTableCall(this.getYear()))
         .then(res => {
+          res.toweek = 6; //Test API
+
           let day = this.getWeekDate();
           this.daytext = day.name;
           this.today = res.courseMartix[res.toweek][day.value - 1];

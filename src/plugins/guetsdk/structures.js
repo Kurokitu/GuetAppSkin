@@ -148,7 +148,7 @@ class APICallMixture extends APICall {
                 operation,
                 3,
                 new errors.CookieInvalidException(),
-            )
+            );
         } else this.handleCommonError(response);
     }
 }

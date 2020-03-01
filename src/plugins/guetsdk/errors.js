@@ -45,7 +45,7 @@ export class Retry extends GUETException {
             this.operation,
             this.remainTimes-1,
             this.error,
-        )
+        );
     }
 }
 

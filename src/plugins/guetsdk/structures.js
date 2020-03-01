@@ -380,8 +380,7 @@ export class GetSelectedClassCall extends APICallMixture {
 
     async postprocessor(response) {
         if (this.isOk(response)) {
-            let selClassIns = [];
-            return new GetSelectedClassResult(response.data.data.map( v => SelectedClass.fromDataArray(v) ));
+            return new GetSelectedClassResult(response.data.data.map(v => SelectedClass.fromDataArray(v)));
         } else this.handleCommonError(response);
     }
 }
@@ -496,17 +495,20 @@ export class GetCourseTableResult extends APIResult {
 
 
 export class Course {
-    constructor({ name, teacherName }) {
+    constructor({ name, teacherName, classNum }) {
         this.name = name;
         this.teacherName = teacherName;
+        this.classNum = classNum;
     }
 
     static fromDataArray(arr) {
+        let [, classNum] = arr[0].split('@');
         let dataString = arr[1];
         let [name, , teacherName] = dataString.split('@');
         return new Course({
             name: name,
-            teacherName: teacherName
+            teacherName: teacherName,
+            classNum: classNum,
         });
     }
 }

@@ -24,7 +24,7 @@
             </v-list-item-title>
             <v-list-item-content>
               第三方桂北汇，在兼容官方小程序的情况下扩展出的项目。
-              部分功能因为有测试风险无法实现，如选课。请使用官方小程序进行操作。
+              部分功能因为有测试风险无法实现，如选课、退课。请使用官方小程序进行操作。
             </v-list-item-content>
           </v-list-item-content>
         </v-list-item>

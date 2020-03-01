@@ -1,6 +1,11 @@
 <template>
   <with-app-bar>
-    <v-card v-if="this.windowSize.x < 420" class="mx-auto mb-6 pa-4" elevation="0" v-resize="onResize">
+    <v-card
+      v-if="this.windowSize.x < 420"
+      class="mx-auto mb-6 pa-4"
+      elevation="0"
+      v-resize="onResize"
+    >
       <v-carousel
         cycle
         :height="this.windowSize.x > 1024 ? 400 : 170"
@@ -44,7 +49,10 @@
 </template>
 
 <script>
-import { UserInfoCall, GetCourseTableCall } from "@/plugins/guetsdk/structures";
+import {
+  UserInfoCall,
+  GetCourseTableCall
+} from "@/plugins/guetsdk/structures";
 export default {
   name: "Index",
   data() {
@@ -85,7 +93,7 @@ export default {
       await this.$guet()
         .send(new GetCourseTableCall(20192))
         .then(res => {
-          res.toweek = 1;
+          // let goodData = reshapeBadCourseTablel(res);
           window.console.log(res);
         })
         .catch(res => {

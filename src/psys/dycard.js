@@ -34,6 +34,6 @@ export class DynamicCardPlugin extends Plugin {
 
     /* eslint-disable-next-line */
     async body(entry){
-        this.addService(CARDMANAGER_SERVICE,() => this.cardManager);
+        entry.addService(CARDMANAGER_SERVICE,() => this.cardManager);
     }
 }

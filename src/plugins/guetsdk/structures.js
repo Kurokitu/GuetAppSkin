@@ -381,10 +381,7 @@ export class GetSelectedClassCall extends APICallMixture {
     async postprocessor(response) {
         if (this.isOk(response)) {
             let selClassIns = [];
-            for (let selClassArray of response.data.data) {
-                selClassIns.push(SelectedClass.fromDataArray(selClassArray));
-                return new GetSelectedClassResult(selClassIns);
-            }
+            return new GetSelectedClassResult(response.data.data.map( v => SelectedClass.fromDataArray(v) ));
         } else this.handleCommonError(response);
     }
 }
@@ -451,7 +448,7 @@ export let reshapeBadCourseTable = (t) => {
             reshaped[day][courseIndex] = classInfo;
         });
     });
-    return courses;
+    return reshaped;
 };
 
 

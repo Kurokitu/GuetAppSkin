@@ -1,15 +1,15 @@
 <template>
   <with-app-bar>
-    <!-- <v-card class="mx-auto mb-6 pa-4" elevation="0" v-resize="onResize">
+    <v-card v-if="this.windowSize.x < 420" class="mx-auto mb-6 pa-4" elevation="0" v-resize="onResize">
       <v-carousel
         cycle
-        :height="this.windowSize.x > 1024 ? 400 : 180"
+        :height="this.windowSize.x > 1024 ? 400 : 170"
         hide-delimiter-background
         show-arrows-on-hover
       >
         <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
       </v-carousel>
-    </v-card>-->
+    </v-card>
 
     <v-card class="pa-4 mx-auto" elevation="0">
       <strong class="display-1">你好,</strong>
@@ -86,6 +86,7 @@ export default {
       await this.$guet()
         .send(new GetCourseTableCall(20192))
         .then(res => {
+          res.toweek = 1;
           window.console.log(res);
         })
         .catch(res => {

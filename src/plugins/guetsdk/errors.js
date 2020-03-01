@@ -22,7 +22,7 @@ export class Retry extends GUETException {
 
     async retry(client){
         let result, err;
-        if(remainTimes > 0){
+        if(this.remainTimes > 0){
             try {
                 result = await this.operation(client);
             } catch(e) {
@@ -30,8 +30,8 @@ export class Retry extends GUETException {
                 err = e;
             }
         } else {
-            if (error){
-                throw error;
+            if (this.error){
+                throw this.error;
             } else if (err){
                 throw err;
             }

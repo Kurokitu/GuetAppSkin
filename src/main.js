@@ -11,6 +11,7 @@ import { VuePsysPlugin, VueDynamicCardPlugin } from '@/plugins/psys.js';
 import { ClientHolder, GUETPlugin } from '@/plugins/guetsdk_plugin'; // 引入GuetSKD
 import './usersaving';
 import other from '@/plugins/other';
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
@@ -19,6 +20,7 @@ Vue.use(new GUETPlugin());
 Vue.use(new VuePsysPlugin());
 Vue.use(new VueDynamicCardPlugin());
 Vue.use(other);
+Vue.component(VueQrcode.name, VueQrcode);
 
 Vue.component('my-app-bar', MyAppBar);
 Vue.component('with-app-bar', WithAppBar);

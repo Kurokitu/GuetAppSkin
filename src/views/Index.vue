@@ -1,15 +1,24 @@
 <template>
   <with-app-bar>
     <v-card class="pa-4 mx-auto" elevation="0">
-      <strong class="display-1">你好,</strong>
-      <br />
-      <v-card-text class="pl-1">
-        <strong class="headline" style="text-align: right;">{{ myname }} 同学</strong>
-      </v-card-text>
-      <v-card-text class="pl-2">
-        <p>ID: {{ myid }}</p>
-        <p>班级: {{ myclass }}</p>
-      </v-card-text>
+      <v-skeleton-loader v-if="myid == 'null'" height="140" type="list-item-two-line"></v-skeleton-loader>
+      <v-card v-else elevation="0" class="pa-0">
+        <strong class="display-1 light-blue--text">你好,</strong>
+        <v-card-text class="pl-1 d-inline">
+          <strong class="headline" style="text-align: right;">{{ myname }} 同学</strong>
+        </v-card-text>
+        <v-card-text class="pl-2 pt-4">
+          <p>ID: {{ myid }}</p>
+          <p>班级: {{ myclass }}</p>
+          <qrcode
+            v-if="myid != 'null'"
+            class="float-right"
+            style="margin-top: -110px"
+            :value="myid"
+            :options="{ width: 100, color:{ dark: '#03A9F4' } }"
+          ></qrcode>
+        </v-card-text>
+      </v-card>
 
       <v-card class="mx-auto mt-6" max-width="100%" tile>
         <v-list-item>

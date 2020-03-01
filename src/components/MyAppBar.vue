@@ -1,7 +1,7 @@
 <template>
     <v-app-bar color="white" app elevate-on-scroll scroll-target="#scrolling-techniques-7">
       <v-app-bar-nav-icon
-        color="blue"
+        color="light-blue"
         transition="scale-transition"
         @click.stop="onToggleDrawer"
       ></v-app-bar-nav-icon>
@@ -14,7 +14,7 @@
           transition="scale-transition"
           width="30"
         />
-        <v-toolbar-title class="blue--text">桂北汇</v-toolbar-title>
+        <v-toolbar-title class="light-blue--text">桂北汇</v-toolbar-title>
       </div>
     </v-app-bar>
 </template>

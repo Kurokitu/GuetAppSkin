@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "loglevel": "^1.6.7",
     "uuid": "^7.0.1",
     "vue": "^2.6.11",
     "vue-router": "^3.1.5",
@@ -31,6 +32,8 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@mdi/font": "^4.9.95",
     "@mdi/js": "^4.9.95",
+    "@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
+    "@vue/babel-preset-jsx": "^1.1.2",
     "@vue/cli-plugin-babel": "^4.2.0",
     "@vue/cli-plugin-eslint": "^4.2.0",
     "@vue/cli-plugin-router": "^4.2.2",

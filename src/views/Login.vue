@@ -14,7 +14,7 @@
         @keydown.enter="validate()"
       ></v-text-field>
 
-      <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate()">登入</v-btn>
+      <v-btn :disabled="!valid" color="blue" class="mr-4" dark @click="validate()">登入</v-btn>
     </v-form>
   </v-card>
 </template>

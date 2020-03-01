@@ -97,8 +97,8 @@ export class APICall {
         return this.postprocessor !== undefined ? this.postprocessor : this._defaultPostprocessor;
     }
 
-    callPostprocessor(response){
-      return this.getPostprocessor().call(this,response);
+    callPostprocessor(response) {
+        return this.getPostprocessor().call(this, response);
     }
 
     _defaultPostprocessor(response) {
@@ -160,14 +160,14 @@ export class LoginCall extends APICallMixture {
 
     postprocessor(response) {
         return new Promise((resolve) => {
-          if (this.isOk(response)) {
+            if (this.isOk(response)) {
                 resolve(
                     new LoginResult(
                         response.data.cookie_key,
                         response.data.cookie
                     )
                 );
-          } else this.handleCommonError(response);
+            } else this.handleCommonError(response);
         });
     }
 }
@@ -470,7 +470,7 @@ export class GetCourseTableCall extends APICallMixture {
         if (this.isOk(response)) {
             let martixByWeek = [];
             let data = response.data.data;
-            for (let weekString of data.keys()) {
+            for (let weekString of Object.keys(data)) {
                 let week = Number.parseInt(weekString);
                 if (!isNaN(week)) {
                     martixByWeek[week - 1] = reshapeBadCourseTable(data[week]);

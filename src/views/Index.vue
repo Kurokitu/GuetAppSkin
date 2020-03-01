@@ -9,7 +9,7 @@
       >
         <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
       </v-carousel>
-    </v-card> -->
+    </v-card>-->
 
     <v-card class="pa-4 mx-auto" elevation="0">
       <strong class="display-1">你好,</strong>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { UserInfoCall } from "@/plugins/guetsdk/structures";
+import { UserInfoCall, GetCourseTableCall } from "@/plugins/guetsdk/structures";
 export default {
   name: "Index",
   data() {
@@ -70,16 +70,28 @@ export default {
   },
   mounted() {
     this.onResize();
+    this.UserInfo();
+    this.Course();
   },
   methods: {
     onResize() {
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
     async UserInfo() {
-      let userInfoResult = await this.$guet().client.send(new UserInfoCall());
-
+      let userInfoResult = await this.$guet().send(new UserInfoCall());
       this.name = userInfoResult.name;
+    },
+
+    async Course() {
+      await this.$guet()
+        .send(new GetCourseTableCall(20192))
+        .then(res => {
+          window.console.log(res);
+        })
+        .catch(res => {
+          window.console.log(res);
+        });
     }
   }
 };
-</script>>
+</script>

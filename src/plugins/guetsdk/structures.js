@@ -451,7 +451,7 @@ export let reshapeBadCourseTable = (t) => {
             reshaped[day][courseIndex] = classInfo;
         });
     });
-    return courses;
+    return reshaped;
 };
 
 

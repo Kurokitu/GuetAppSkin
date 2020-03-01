@@ -476,9 +476,11 @@ export class GetCourseTableCall extends APICallMixture {
                     martixByWeek[week - 1] = reshapeBadCourseTable(data[week]);
                 }
             }
-            martixByWeek.map((courseTable) => {
-                return courseTable.map((courseInDay) => {
-                    return courseInDay.map((courseDataArray) => Course.fromDataArray(courseDataArray));
+            martixByWeek = martixByWeek.map((courseTablePerWeek) => {
+                return courseTablePerWeek.map((coursePerDay) => {
+                    return coursePerDay.map((coursesInDay) => coursesInDay.map(
+                        courseDataArray => Course.fromDataArray(courseDataArray)
+                    ));
                 });
             });
             return new GetCourseTableResult(data.toweek, martixByWeek);

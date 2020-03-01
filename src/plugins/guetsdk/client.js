@@ -1,5 +1,6 @@
 import BCLI from './base';
 import { LoginCall } from './structures';
+import { Retry, CookieInvalidException } from './errors';
 
 
 class CallbackChain {
@@ -42,6 +43,7 @@ export class GUETClient {
         this.userCookie = null;
         this.onCookieNotFoundCallback = new CallbackChain();
         this.onCookieSetCallback = new CallbackChain();
+        this.onCookieInvalidCallback = new CallbackChain();
     }
 
     login(username, password) {
@@ -83,7 +85,13 @@ export class GUETClient {
         if (await this.askLogin()) {
             call.setCookie(this.userCookie);
         }
-        return await this.rawSend(call.makeAxiosRequestConfig()).then((response) => call.callPostprocessor(response));
+        return await (this.rawSend(call.makeAxiosRequestConfig())
+                      .then((response) => call.callPostprocessor(response))
+                      .catch(e => {
+                          if ((e instanceof Retry ) && (e.error instanceof CookieInvalidException)){
+                              this.onCookieInvalidCallback.applyAsync(this).then(() => e.retry());
+                          }
+                      }));
     }
 
     static withLogin(username, password) {
@@ -98,6 +106,8 @@ export class GUETClient {
             this.onCookieNotFoundCallback.push(callback);
         } else if (event == "cookie_set"){
             this.onCookieSetCallback.push(callback);
+        } else if (event == "cookie_invalid"){
+            this.onCookieInvalidCallback.push(callback);
         }
     }
 }

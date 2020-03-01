@@ -140,6 +140,17 @@ class APICallMixture extends APICall {
             throw new errors.UnknownException(response.data.msg);
         }
     }
+
+    retryCommonCase(response, operation) {
+        if(this.isStatus(response, 4)){
+            throw new errors.Retry(
+                "cookie reported invalid",
+                operation,
+                3,
+                new errors.CookieInvalidException(),
+            )
+        } else this.handleCommonError(response);
+    }
 }
 
 
@@ -267,9 +278,10 @@ export class ChangePasswordCall extends APICallMixture {
     async postprocessor(response) {
         if (this.isOk(response)) {
             return new ChangePasswordResult();
-        } else {
-            throw new errors.UnknownException(response.data.msg);
-        }
+        } else this.retryCommonCase(
+            response,
+            client => client.send(this)
+        );
     }
 }
 
@@ -285,12 +297,11 @@ export class GetCreditCall extends APICallMixture {
 
     async postprocessor(response) {
         if (this.isOk(response)) {
-            let creditInstances = [];
-            for (let creditsArray of response.data.data) {
-                creditInstances.push(CourseCredit.fromArray(creditsArray));
-            }
-            return new GetCreditResult(creditInstances);
-        } else this.handleCommonError(response);
+            return new GetCreditResult(response.data.data.map(v => new CourseCredit(v)));
+        } else this.retryCommonCase(
+            response,
+            client => client.send(this)
+        );
     }
 }
 
@@ -339,7 +350,10 @@ export class GetTermsCall extends APICallMixture {
             }
             return new GetTermsResult(termInstances);
         } else {
-            this.handleCommonError(response);
+            this.retryCommonCase(
+                response,
+                client => client.send(this),
+            );
         }
     }
 }
@@ -380,8 +394,11 @@ export class GetSelectedClassCall extends APICallMixture {
 
     async postprocessor(response) {
         if (this.isOk(response)) {
-            return new GetSelectedClassResult(response.data.data.map(v => SelectedClass.fromDataArray(v)));
-        } else this.handleCommonError(response);
+            return new GetSelectedClassResult(response.data.data.map( v => SelectedClass.fromDataArray(v) ));
+        } else this.retryCommonCase(
+            response,
+            client => client.send(this),
+        );
     }
 }
 
@@ -480,7 +497,10 @@ export class GetCourseTableCall extends APICallMixture {
                 });
             });
             return new GetCourseTableResult(data.toweek, martixByWeek);
-        } else this.handleCommonError(response);
+        } else this.retryCommonCase(
+            response,
+            client => client.send(this),
+        );
     }
 }
 

@@ -10,6 +10,7 @@ import WithAppBar from '@/components/WithAppBar';
 import { VuePsysPlugin, VueDynamicCardPlugin } from '@/plugins/psys.js';
 import { ClientHolder, GUETPlugin } from '@/plugins/guetsdk_plugin'; // 引入GuetSKD
 import './usersaving';
+import other from '@/plugins/other';
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
@@ -17,6 +18,7 @@ Vue.prototype.$snackbar = snackbar;
 Vue.use(new GUETPlugin());
 Vue.use(new VuePsysPlugin());
 Vue.use(new VueDynamicCardPlugin());
+Vue.use(other);
 
 Vue.component('my-app-bar', MyAppBar);
 Vue.component('with-app-bar', WithAppBar);

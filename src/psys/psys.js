@@ -121,6 +121,8 @@ export class Plugin {
         this.version = version;
     }
 
+    /* eslint-disable-next-line */
     async hookInstall(entry){}
+    /* eslint-disable-next-line */
     async hookUpdate(entry,oldVersion,newVersion){}
 }

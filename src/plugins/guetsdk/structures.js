@@ -1,10 +1,14 @@
 import errors from './errors';
+import * as log from "loglevel";
 
 const DEFVERSION = "1.1.26";
 
 let COOKIE_CALLBACK = null;
 
 const DEFAULT_REQUEST_PATH = '/gbh/edu';
+
+/* eslint-disable-next-line */
+const logger = log.getLogger("guetsdk/structures.js");
 
 export let setCookieCallback = function (callback) {
     COOKIE_CALLBACK = callback;
@@ -141,15 +145,8 @@ class APICallMixture extends APICall {
         }
     }
 
-    retryCommonCase(response, operation) {
-        if(this.isStatus(response, 4)){
-            throw new errors.Retry(
-                "cookie reported invalid",
-                operation,
-                3,
-                new errors.CookieInvalidException(),
-            );
-        } else this.handleCommonError(response);
+    retryCommonCase(response) {
+        this.handleCommonError(response);
     }
 }
 
@@ -204,9 +201,14 @@ export class UserInfoCall extends APICallMixture {
     }
 
     postprocessor(response) {
-        return new Promise((resolve) => {
-            resolve(UserInfoResult.fromChineseKeyObject(response.data.data));
-        });
+        if (this.isOk(response)){
+            return new Promise((resolve) => {
+                resolve(UserInfoResult.fromChineseKeyObject(response.data.data));
+            });
+        } else this.retryCommonCase(
+            response,
+            client => client.send(this),
+        );
     }
 }
 

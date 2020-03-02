@@ -1,3 +1,6 @@
+import * as log from 'loglevel';
+
+const logger = log.getLogger("guetsdk/errors.js");
 
 export class GUETException extends Error {}
 
@@ -14,7 +17,8 @@ export class UnknownException extends GUETException {
 
 export class Retry extends GUETException {
     constructor(message, operation, remainTimes, error){
-        super(message);
+        super(`Retry(message=${message}, operation=${operation}, remainTimes=${remainTimes}, error=${error})`);
+        this.isRetry = true;
         this.operation = operation;
         this.remainTimes = remainTimes;
         this.error = error;
@@ -23,6 +27,7 @@ export class Retry extends GUETException {
     async retry(client){
         let result, err;
         if(this.remainTimes > 0){
+            logger.warn(this);
             try {
                 result = await this.operation(client);
             } catch(e) {

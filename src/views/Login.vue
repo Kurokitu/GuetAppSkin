@@ -1,4 +1,5 @@
 <template>
+<with-app-bar hide-drawer hide-menu>
   <v-card class="pa-4 mx-auto">
     <v-form v-model="valid" :lazy-validation="lazy">
       <v-text-field type="number" v-model="id" :rules="idRules" label="学号" required></v-text-field>
@@ -14,13 +15,14 @@
         @keydown.enter="validate()"
       ></v-text-field>
 
-      <v-btn :disabled="!valid" color="blue" class="mr-4" dark @click="validate()">登入</v-btn>
+      <v-btn :disabled="!valid" color="blue white--text" class="mr-4" @click="validate()">登入</v-btn>
     </v-form>
   </v-card>
+</with-app-bar>
 </template>
 
 <script>
-import { db } from "@/db";
+import { saveUserRawData } from '@/usersaving';
 
 export default {
   name: "login",
@@ -40,18 +42,12 @@ export default {
       this.$guet()
         .login(this.id, this.password)
         .then(() => {
-          let accountdb = db.collection("config");
-
-          let accountData = {
-            key: "account",
-            type: "t-guet-account-data",
-            value: { uid: this.id, password: this.password },
-            visible: false
-          };
-
-          accountdb.insert(accountData);
-
-          this.$snackbar.success("登入成功");
+          return saveUserRawData({
+            username: this.id,
+            password: this.password,
+          });
+        })
+        .then(() => {
           this.$router.push("/Index");
         })
         .catch(() => {

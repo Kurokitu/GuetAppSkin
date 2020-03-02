@@ -201,7 +201,7 @@ export class UserInfoCall extends APICallMixture {
     }
 
     postprocessor(response) {
-        if (this.isOk(response)){
+        if (this.isOk(response)) {
             return new Promise((resolve) => {
                 resolve(UserInfoResult.fromChineseKeyObject(response.data.data));
             });
@@ -396,7 +396,7 @@ export class GetSelectedClassCall extends APICallMixture {
 
     async postprocessor(response) {
         if (this.isOk(response)) {
-            return new GetSelectedClassResult(response.data.data.map( v => SelectedClass.fromDataArray(v) ));
+            return new GetSelectedClassResult(response.data.data.map(v => SelectedClass.fromDataArray(v)));
         } else this.retryCommonCase(
             response,
             client => client.send(this),
@@ -517,20 +517,38 @@ export class GetCourseTableResult extends APIResult {
 
 
 export class Course {
-    constructor({ name, teacherName, classNum }) {
+    constructor({ name, teacherName, classNum, fullInfo }) {
         this.name = name;
         this.teacherName = teacherName;
         this.classNum = classNum;
+        this.fullInfo = fullInfo;
     }
 
     static fromDataArray(arr) {
-        let [, classNum] = arr[0].split('@');
-        let dataString = arr[1];
-        let [name, , teacherName] = dataString.split('@');
+        function at(val) {
+            if (val.lastIndexOf('@')) {
+                return val.split('@');
+            } else {
+                return val;
+            }
+        }
+        //let [name, ] = at(arr[0]);
+        // let dataString = arr[1];
+        let [name, classNum, teacherName] = at(arr[1]);
+
+        let classNumOK = classNum.replace(/(\([^)]*\))/, "");
+
+        let fullInfo = arr[1];
+
+        // let classNum = arr[0].replace(/Ⅰ|Ⅱ|Ⅲ|[\u4e00-\u9fa5-a-z-A-Z@&*^%#!()%$]/g, "");
+        // let name = arr[0].replace(/[0-9@&*^%#!()%$]/g, "");
+        // let [, , teacherName] = arr[1].split('@');
+
         return new Course({
             name: name,
             teacherName: teacherName,
-            classNum: classNum,
+            classNum: classNumOK,
+            fullInfo: fullInfo
         });
     }
 }

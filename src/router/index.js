@@ -54,6 +54,15 @@ const routes = [
       requireLogin: true,
       skipIfLoggedIn: false,
     }
+  },
+  {
+    path: '/Course',
+    name: 'Course',
+    component: () => import(/* webpackChunkName: "info" */'@/views/Course.vue'),
+    meta: {
+      requireLogin: true,
+      skipIfLoggedIn: false,
+    }
   }
 ];
 

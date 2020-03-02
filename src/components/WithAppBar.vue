@@ -69,7 +69,7 @@ export default {
       drawer: false,
       items: [
         { title: "主页", icon: "mdi-home", page: "Index" },
-        { title: "课程表", icon: "mdi-calendar-month", page: "Index" },
+        { title: "课程表", icon: "mdi-calendar-month", page: "Course" },
         { title: "关于", icon: "mdi-help-box", page: "About" }
       ],
       standByHintOpen: false

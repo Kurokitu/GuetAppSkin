@@ -108,7 +108,7 @@ export default {
       await this.$guet()
         .send(new GetCourseTableCall(this.getYear()))
         .then(res => {
-          res.toweek = 6; //Test API
+          // res.toweek = 6; //Test API
           this.today = res.courseMartix[res.toweek - 1][this.day.value - 1];
           if (this.today.length != 0) {
             this.todayState = true;

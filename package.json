@@ -9,11 +9,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@chenfengyuan/vue-qrcode": "^1.0.2",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "loglevel": "^1.6.7",
     "uuid": "^7.0.1",
     "vue": "^2.6.11",
+    "vue-bus": "^1.2.1",
     "vue-router": "^3.1.5",
     "vuetify": "^2.2.11",
     "vuex": "^3.1.2",

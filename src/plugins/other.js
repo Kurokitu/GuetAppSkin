@@ -15,5 +15,19 @@ export default {
             var week = weeks[day];
             return week;
         };
+
+        Vue.prototype.getYear = function () {
+            let now = new Date();
+
+            var year = now.getFullYear();
+
+            var Month = now.getMonth() + 1;
+
+            if (Month < 8) {
+                return year - 1 + '2';
+            } else {
+                return year + '1';
+            }
+        };
     }
 };

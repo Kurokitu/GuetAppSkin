@@ -13,7 +13,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */'@/views/Home.vue'),
     meta: {
       requireLogin: false,
       skipIfLoggedIn: true,
@@ -22,7 +22,7 @@ const routes = [
   {
     path: '/About',
     name: 'About',
-    component: () => import('@/views/About.vue'),
+    component: () => import(/* webpackChunkName: "about" */'@/views/About.vue'),
     meta: {
       requireLogin: false,
       skipIfLoggedIn: false,
@@ -31,7 +31,7 @@ const routes = [
   {
     path: '/Login',
     name: 'Login',
-    component: () => import('@/views/Login.vue'),
+    component: () => import(/* webpackChunkName: "login" */'@/views/Login.vue'),
     meta: {
       requireLogin: false,
       skipIfLoggedIn: true,
@@ -40,7 +40,25 @@ const routes = [
   {
     path: '/Index',
     name: 'Index',
-    component: () => import('@/views/Index.vue'),
+    component: () => import(/* webpackChunkName: "index" */'@/views/Index.vue'),
+    meta: {
+      requireLogin: true,
+      skipIfLoggedIn: false,
+    }
+  },
+  {
+    path: '/Info',
+    name: 'Info',
+    component: () => import(/* webpackChunkName: "info" */'@/views/Info.vue'),
+    meta: {
+      requireLogin: true,
+      skipIfLoggedIn: false,
+    }
+  },
+  {
+    path: '/Course',
+    name: 'Course',
+    component: () => import(/* webpackChunkName: "info" */'@/views/Course.vue'),
     meta: {
       requireLogin: true,
       skipIfLoggedIn: false,

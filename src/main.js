@@ -4,21 +4,22 @@ import store from './store';
 import vuetify from './plugins/vuetify';
 import router from './router';
 import axios from 'axios';
+import VueBus from 'vue-bus';
 import snackbar from '@/components/Snackbar/int';
 import MyAppBar from '@/components/MyAppBar';
 import WithAppBar from '@/components/WithAppBar';
-import { VuePsysPlugin, VueDynamicCardPlugin } from '@/plugins/psys.js';
 import { ClientHolder, GUETPlugin } from '@/plugins/guetsdk_plugin'; // 引入GuetSKD
 import './usersaving';
 import other from '@/plugins/other';
+import VueQrcode from '@chenfengyuan/vue-qrcode';
 
+Vue.use(VueBus);
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
 Vue.prototype.$snackbar = snackbar;
 Vue.use(new GUETPlugin());
-Vue.use(new VuePsysPlugin());
-Vue.use(new VueDynamicCardPlugin());
 Vue.use(other);
+Vue.component(VueQrcode.name, VueQrcode);
 
 Vue.component('my-app-bar', MyAppBar);
 Vue.component('with-app-bar', WithAppBar);

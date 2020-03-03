@@ -1,7 +1,9 @@
 import BCLI from './base';
 import { LoginCall } from './structures';
-import { Retry, CookieInvalidException } from './errors';
+import * as log from 'loglevel';
+import { CookieInvalidException } from './errors';
 
+const logger = log.getLogger("guetsdk/client.js");
 
 class CallbackChain {
     constructor(){
@@ -13,12 +15,14 @@ class CallbackChain {
     }
 
     apply(arg){
+        logger.info(`CallbackChain: apply}`);
         for (let f of this.chain){
             f.call(null, arg);
         }
     }
 
     applyAsync(arg){
+        logger.info(`CallbackChain: apply in async`);
         let promises = [];
         for (let f of this.chain){
             let p = f.call(null, arg);
@@ -81,17 +85,26 @@ export class GUETClient {
         return BCLI(requestConfig);
     }
 
-    async send(call) {
+    async send(call, retryTimes) {
+        if (!retryTimes) retryTimes = 10;
         if (await this.askLogin()) {
             call.setCookie(this.userCookie);
         }
-        return await (this.rawSend(call.makeAxiosRequestConfig())
+        return this.rawSend(call.makeAxiosRequestConfig())
                       .then((response) => call.callPostprocessor(response))
                       .catch(e => {
-                          if ((e instanceof Retry ) && (e.error instanceof CookieInvalidException)){
-                              this.onCookieInvalidCallback.applyAsync(this).then(() => e.retry());
+                          if (retryTimes <= 1) return Promise.reject(e);
+                          logger.warn("send(): catch error from postprocessor", e);
+                          if (e.isRetry){
+                              logger.warn("send():retring");
+                              return this.onCookieInvalidCallback.applyAsync(this).then(() => e.retry());
+                          } else if (e instanceof CookieInvalidException){
+                            logger.warn("send():cookie invalid, retring");
+                            return this.onCookieInvalidCallback.applyAsync(this).then(() => this.send(call, retryTimes-1));
+                          } else {
+                              return Promise.reject(e);
                           }
-                      }));
+                      });
     }
 
     static withLogin(username, password) {

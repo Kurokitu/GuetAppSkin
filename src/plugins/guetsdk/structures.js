@@ -461,7 +461,7 @@ export let reshapeBadCourseTable = (t) => {
     let courses = object2array(t, 1, 5).map((el) => object2array(el, 1, 7));
     courses.forEach((byDay, courseIndex) => {
         byDay.forEach((classInfo, day) => {
-            reshaped[day][courseIndex] = classInfo;
+            reshaped[day][courseIndex] = classInfo[0];
         });
     });
     return reshaped;

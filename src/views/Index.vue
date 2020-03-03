@@ -8,15 +8,15 @@
           <strong class="headline" style="text-align: right;">{{ myname }} 同学</strong>
         </v-card-text>
         <v-card-text class="pl-2 pt-4">
-            <p>ID: {{ myid }}</p>
-            <p>班级: {{ myclass }}</p>
-            <qrcode
-              v-if="myid"
-              class="float-right hide-if-too-small"
-              style="margin-top: -120px"
-              :value="myid"
-              :options="{ width: 100, color:{ dark: '#03A9F4' }, margin: 0 }"
-            ></qrcode>
+          <p>ID: {{ myid }}</p>
+          <p>班级: {{ myclass }}</p>
+          <qrcode
+            v-if="myid"
+            class="float-right hide-if-too-small"
+            style="margin-top: -120px"
+            :value="myid"
+            :options="{ width: 100, color:{ dark: '#03A9F4' }, margin: 0 }"
+          ></qrcode>
         </v-card-text>
       </v-card>
 
@@ -30,7 +30,7 @@
           </v-list-item-content>
         </v-list-item>
         <transition name="fade">
-          <div v-if="todayState">
+          <div v-if="todayState && (todayState.length != 0)">
             <div v-for="(item, index) in today" :key="index">
               <v-list-item v-for="(cItem, i) in item" :key="i">
                 <v-list-item-content>
@@ -73,7 +73,8 @@ export default {
       },
       todayState: false,
       today: [],
-      classIsLoading: false
+      classIsLoading: false,
+      n: 0
     };
   },
   mounted() {
@@ -108,11 +109,10 @@ export default {
       await this.$guet()
         .send(new GetCourseTableCall(this.getYear()))
         .then(res => {
-          // res.toweek = 6; //Test API
+         // res.toweek = 6; //Test API
           this.today = res.courseMartix[res.toweek - 1][this.day.value - 1];
-          if (this.today.length != 0) {
-            this.todayState = true;
-          }
+          // this.todayState = true;
+          this.getTodayState();
         })
         .then(() => (this.classIsLoading = false))
         .catch(res => {
@@ -121,6 +121,21 @@ export default {
           }
           this.classIsLoading = false;
         });
+    },
+
+    getTodayState() {
+      this.today.forEach(item => {
+        if (item.length === 1) {
+          this.n + 1;
+          if (this.n < 5) {
+            this.todayState = true;
+            this.n = 0;
+          } else {
+            this.todayState = false;
+            this.n = 0;
+          }
+        }
+      });
     }
   }
 };

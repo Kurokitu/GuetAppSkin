@@ -26,7 +26,7 @@
                 <th
                   v-for="(weekNum, weekIndex) in classTableData.courses.length"
                   :key="weekIndex"
-                >{{'周' + digital2Chinese(weekIndex+1, 'week')}}</th>
+                >{{'周' + digital2Chinese(weekIndex + 1, 'week')}}</th>
               </tr>
             </thead>
             <tbody>
@@ -41,11 +41,12 @@
                   :key="courseIndex"
                   @click.stop="lookAllInfo(courseIndex,lessonIndex)"
                 >
-                  <!-- {{ getData(courseIndex,lessonIndex) }} -->
-                  <p
+                  <span
                     v-for="(value, index) in classTableData.courses[courseIndex][lessonIndex]"
                     :key="index"
-                  >{{value.name}}@{{ value.classNum }}</p>
+                  >
+                    <template v-if="value !== null">{{value.name}}@{{ value.classNum }}</template>
+                  </span>
                 </td>
               </tr>
             </tbody>
@@ -184,6 +185,7 @@ export default {
 
     lookAllInfo(x, y) {
       this.fullInfo = this.classTableData.courses[x][y];
+      window.console.log(this.fullInfo);
       this.infodialog = true;
     }
   }

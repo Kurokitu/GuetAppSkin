@@ -3,9 +3,9 @@
     <v-card class="pa-4 mx-auto" elevation="0">
       <v-skeleton-loader v-if="!myid" height="140" type="list-item-two-line"></v-skeleton-loader>
       <v-card v-else elevation="0" class="pa-0">
-        <strong class="display-1 light-blue--text">你好,</strong>
+        <strong class="display-1 light-blue--text">{{ myname }},</strong>
         <v-card-text class="pl-1 d-inline">
-          <strong class="headline" style="text-align: right;">{{ myname }}</strong>
+          <strong class="headline" style="text-align: right;"> 你好！：)</strong>
         </v-card-text>
         <v-card-text class="pl-2 pt-4">
           <p>ID: {{ myid }}</p>

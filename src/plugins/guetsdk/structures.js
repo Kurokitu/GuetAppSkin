@@ -1,7 +1,7 @@
 import errors from './errors';
 import * as log from "loglevel";
 
-const DEFVERSION = "1.1.26";
+const DEFVERSION = "1.1.44";
 
 let COOKIE_CALLBACK = null;
 

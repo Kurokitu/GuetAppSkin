@@ -482,6 +482,7 @@ export class GetCourseTableCall extends APICallMixture {
     }
 
     async postprocessor(response) {
+        window.console.log(response);
         if (this.isOk(response)) {
             let martixByWeek = [];
             let data = response.data.data;
@@ -525,29 +526,27 @@ export class Course {
     }
 
     static fromDataArray(arr) {
-        function at(val) {
-            if (val.lastIndexOf('@')) {
-                return val.split('@');
-            } else {
-                return val;
-            }
-        }
         //let [name, ] = at(arr[0]);
         // let dataString = arr[1];
-        let [name, classNum, teacherName] = at(arr[1]);
+        let [name, classNum, teacherName] = arr.split('@');
 
-        let classNumOK = classNum.replace(/(\([^)]*\))/, "");
-
-        let fullInfo = arr[1];
+        let fullInfo = arr;
 
         // let classNum = arr[0].replace(/Ⅰ|Ⅱ|Ⅲ|[\u4e00-\u9fa5-a-z-A-Z@&*^%#!()%$]/g, "");
         // let name = arr[0].replace(/[0-9@&*^%#!()%$]/g, "");
         // let [, , teacherName] = arr[1].split('@');
 
+        window.console.log(new Course({
+            name: name,
+            teacherName: teacherName,
+            classNum: classNum,
+            fullInfo: fullInfo
+        }));
+
         return new Course({
             name: name,
             teacherName: teacherName,
-            classNum: classNumOK,
+            classNum: classNum,
             fullInfo: fullInfo
         });
     }

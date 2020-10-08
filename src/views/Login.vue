@@ -15,6 +15,17 @@
         @keydown.enter="validate()"
       ></v-text-field>
 
+      <v-select
+          v-model="select"
+          :items="items"
+          item-text="name"
+          item-value="identity"
+          label="角色"
+          persistent-hint
+          return-object
+          single-line
+        ></v-select>
+
       <v-btn :disabled="!valid" color="blue white--text" class="mr-4" @click="validate()">登入</v-btn>
     </v-form>
   </v-card>
@@ -34,17 +45,23 @@ export default {
       id: "",
       idRules: [v => !!v || "必须输入学号"],
       password: "",
-      passRules: [v => !!v || "必须输入密码"]
+      passRules: [v => !!v || "必须输入密码"],
+      select: { name: '学生', identity: 'student' },
+      items: [
+        { name: '学生', identity: 'student' },
+        // { name: '教师', identity: 'teacher' }
+      ]
     };
   },
   methods: {
     validate() {
       this.$guet()
-        .login(this.id, this.password)
+        .login(this.id, this.password, this.select.identity)
         .then(() => {
           return saveUserRawData({
             username: this.id,
             password: this.password,
+            identity: this.select.identity
           });
         })
         .then(() => {

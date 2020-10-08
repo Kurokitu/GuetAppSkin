@@ -191,14 +191,14 @@ export class APIResult { }
 
 
 export class LoginCall extends APICallMixture {
-    constructor(username, password) {
+    constructor(username, password, identity) {
         super();
         this.setRequestPath('/info/bind');
         //this.setFunction('login');
         this.setType('init_login');
         this.setUsername(username);
         this.setPassword(password);
-        this.setIdentity('student');
+        this.setIdentity(identity);
         // this.addArguments({
         //     'username': username,
         //     'password': password

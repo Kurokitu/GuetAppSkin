@@ -50,8 +50,8 @@ export class GUETClient {
         this.onCookieInvalidCallback = new CallbackChain();
     }
 
-    login(username, password) {
-        return this.send(new LoginCall(username, password)).then((result) => {
+    login(username, password, identity) {
+        return this.send(new LoginCall(username, password, identity)).then((result) => {
             this.setUserCookie(result.getUserCookie());
             return result;
         });

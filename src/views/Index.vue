@@ -5,7 +5,7 @@
       <v-card v-else elevation="0" class="pa-0">
         <strong class="display-1 light-blue--text">你好,</strong>
         <v-card-text class="pl-1 d-inline">
-          <strong class="headline" style="text-align: right;">{{ myname }} 同学</strong>
+          <strong class="headline" style="text-align: right;">{{ myname }}</strong>
         </v-card-text>
         <v-card-text class="pl-2 pt-4">
           <p>ID: {{ myid }}</p>

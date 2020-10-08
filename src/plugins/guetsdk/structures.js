@@ -109,6 +109,38 @@ export class APICall {
         return response;
     }
 
+    setUsername(username) {
+        this.username = username;
+    }
+
+    setPassword(password) {
+        this.password = password;
+    }
+
+    setType(type) {
+        this.type = type;
+    }
+
+    setIdentity(identity) {
+        this.identity = identity;
+    }
+
+    getUsername() {
+        return this.username;
+    }
+
+    getPassword() {
+        return this.password;
+    }
+
+    getType() {
+        return this.type;
+    }
+
+    getIdentity() {
+        return this.identity;
+    }
+
     makeAxiosRequestConfig() {
         return {
             url: this.getRequestPath(),
@@ -116,6 +148,10 @@ export class APICall {
             data: {
                 func: this.getFunction(),
                 argv: this.getArguments(),
+                username: this.getUsername(),
+                password: this.getPassword(),
+                type: this.getType(),
+                identity: this.getIdentity(),
                 cookie: this.getCookie(),
                 version: DEFVERSION
             }
@@ -157,12 +193,16 @@ export class APIResult { }
 export class LoginCall extends APICallMixture {
     constructor(username, password) {
         super();
-        this.setRequestPath('/gbh/login');
-        this.setFunction('login');
-        this.addArguments({
-            'username': username,
-            'password': password
-        });
+        this.setRequestPath('/info/bind');
+        //this.setFunction('login');
+        this.setType('init_login');
+        this.setUsername(username);
+        this.setPassword(password);
+        this.setIdentity('student');
+        // this.addArguments({
+        //     'username': username,
+        //     'password': password
+        // });
         this.setPostprocessor(this.postprocessor);
     }
 
@@ -482,7 +522,6 @@ export class GetCourseTableCall extends APICallMixture {
     }
 
     async postprocessor(response) {
-        window.console.log(response);
         if (this.isOk(response)) {
             let martixByWeek = [];
             let data = response.data.data;
@@ -492,6 +531,7 @@ export class GetCourseTableCall extends APICallMixture {
                     martixByWeek[week - 1] = reshapeBadCourseTable(data[week]);
                 }
             }
+            
             martixByWeek = martixByWeek.map((courseTablePerWeek) => {
                 return courseTablePerWeek.map((coursePerDay) => {
                     return coursePerDay.map((coursesInDay) => coursesInDay.map(
@@ -536,16 +576,9 @@ export class Course {
         // let name = arr[0].replace(/[0-9@&*^%#!()%$]/g, "");
         // let [, , teacherName] = arr[1].split('@');
 
-        window.console.log(new Course({
-            name: name,
-            teacherName: teacherName,
-            classNum: classNum,
-            fullInfo: fullInfo
-        }));
-
         return new Course({
             name: name,
-            teacherName: teacherName,
+            teacherName: teacherName ,
             classNum: classNum,
             fullInfo: fullInfo
         });

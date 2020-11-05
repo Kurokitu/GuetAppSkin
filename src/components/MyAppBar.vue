@@ -35,8 +35,6 @@
 </template>
 
 <script>
-import { db } from "@/db";
-
 export default {
   props: {
     value: {
@@ -65,10 +63,8 @@ export default {
     },
     logout() {
       this.$bus.emit("need_standby");
-      db.drop().then(() => {
-        this.$guet().userCookie = null;
-        window.location.replace("/");
-      });
+      localStorage.clear()
+      this.$router.push("/");
     }
   },
   mounted(){

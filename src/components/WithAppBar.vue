@@ -15,7 +15,7 @@
         <v-list>
           <v-list-item link @click="goInfoPage()">
             <v-list-item-content>
-              <v-list-item-title class="title">你</v-list-item-title>
+              <v-list-item-title class="title">个人档案</v-list-item-title>
             </v-list-item-content>
 
             <v-list-item-action >

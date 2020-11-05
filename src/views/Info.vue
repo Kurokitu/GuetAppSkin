@@ -5,11 +5,19 @@
         <transition name="fade">
           <v-list-item v-show="!myid">
             <v-list-item-avatar>
-              <v-progress-circular indeterminate color="primary" v-if="!isError"></v-progress-circular>
+              <v-progress-circular
+                indeterminate
+                color="primary"
+                v-if="!isError"
+              ></v-progress-circular>
               <v-icon v-else-if="isError" color="red">mdi-alert-circle</v-icon>
             </v-list-item-avatar>
-            <v-list-item-title v-if="!isError">正在联系桂北汇</v-list-item-title>
-            <v-list-item-title v-else-if="isError">桂北汇拒绝了我们的请求</v-list-item-title>
+            <v-list-item-title v-if="!isError"
+              >正在联系桂北汇</v-list-item-title
+            >
+            <v-list-item-title v-else-if="isError"
+              >桂北汇拒绝了我们的请求</v-list-item-title
+            >
             <v-list-item-action v-show="isError" @click="retryInfoLoad()">
               <v-icon>mdi-refresh</v-icon>
             </v-list-item-action>
@@ -44,14 +52,6 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-subheader>你的资历</v-subheader>
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title>年级</v-list-item-title>
-            <v-list-item-subtitle>{{ mygrade }}</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title>专业</v-list-item-title>
@@ -61,7 +61,13 @@
       </v-list>
       <v-divider></v-divider>
       <v-subheader>账户安全</v-subheader>
-      <v-list-item link @click.stop="editPasswordDialog = !editPasswordDialog">
+      <v-list-item>
+        <v-list-item-avatar>
+          <v-icon color="red">mdi-alert-circle</v-icon>
+        </v-list-item-avatar>
+        <v-list-item-title>目前小程序已无法修改密码 故暂停这项功能</v-list-item-title>
+      </v-list-item>
+      <v-list-item disabled link @click.stop="editPasswordDialog = !editPasswordDialog">
         <v-list-item-avatar>
           <v-icon>mdi-pencil</v-icon>
         </v-list-item-avatar>
@@ -111,8 +117,16 @@
         </v-form>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="clearPasswordEditAndClose()">取消</v-btn>
-          <v-btn color="blue darken-1" text @click="submitNewPassword()" :disabled="!valid">提交</v-btn>
+          <v-btn color="blue darken-1" text @click="clearPasswordEditAndClose()"
+            >取消</v-btn
+          >
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="submitNewPassword()"
+            :disabled="!valid"
+            >提交</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -124,7 +138,9 @@
         <v-card-text>就是这样</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="failDialog = false">取消</v-btn>
+          <v-btn color="blue darken-1" text @click="failDialog = false"
+            >取消</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -132,8 +148,7 @@
 </template>
 
 <script>
-import { UserInfoCall, ChangePasswordCall } from "@/plugins/guetsdk/structures";
-import { updatePassword } from "@/usersaving";
+import axios from "@/lib/api";
 
 export default {
   name: "Index",
@@ -189,14 +204,26 @@ export default {
       this.windowSize = { x: window.innerWidth, y: window.innerHeight };
     },
     async UserInfo() {
-      let userInfoResult = await this.$guet().send(new UserInfoCall());
-      this.myname = userInfoResult.name;
-      this.myid = userInfoResult.id;
-      this.myclass = userInfoResult.classId;
-      this.mygender = userInfoResult.gender;
-      this.mygrade = userInfoResult.grade;
-      this.mydiscipline = userInfoResult.discipline;
-      this.myflatId = userInfoResult.flatId;
+      await axios.eduport({
+        cookie: this.$get.getFullCookie(),
+        func: "info",
+        argv: {}
+      })
+      .then((res) => {
+        this.$save.saveUserInfoOnly(res.data);
+
+        let userInfoResult = this.$get.getUserInfo();
+        this.myname = userInfoResult.name;
+        this.myid = userInfoResult.id;
+        this.myclass = userInfoResult.class;
+        this.mygender = userInfoResult.sex;
+        this.mydiscipline = userInfoResult.major;
+        this.myflatId = userInfoResult.flatId;
+      })
+      .catch((err) => {
+        console.log(err);
+        this.$toast('发生了一些错误。请重试。', 'error');
+      });
     },
     retryInfoLoad() {
       this.isError = false;
@@ -204,25 +231,25 @@ export default {
         this.isError = true;
       });
     },
-    submitNewPassword() {
-      let call = new ChangePasswordCall(this.oldPassword, this.newPassword);
-      this.$bus.emit("need_standby");
-      this.$guet()
-        .send(call)
-        .then(x => {
-          updatePassword(this.newPassword);
-          this.clearPasswordEditAndClose();
-          this.$snackbar.success("修改成功");
-          return x;
-        })
-        .then(() => {
-          this.$bus.emit("no_standby");
-        })
-        .catch(() => {
-          this.failDialog = true;
-          this.$bus.emit("no_standby");
-        });
-    },
+    // submitNewPassword() {
+    //   let call = new ChangePasswordCall(this.oldPassword, this.newPassword);
+    //   this.$bus.emit("need_standby");
+    //   this.$guet()
+    //     .send(call)
+    //     .then(x => {
+    //       updatePassword(this.newPassword);
+    //       this.clearPasswordEditAndClose();
+    //       this.$snackbar.success("修改成功");
+    //       return x;
+    //     })
+    //     .then(() => {
+    //       this.$bus.emit("no_standby");
+    //     })
+    //     .catch(() => {
+    //       this.failDialog = true;
+    //       this.$bus.emit("no_standby");
+    //     });
+    // },
     clearPasswordEditAndClose() {
       this.editPasswordDialog = false;
       this.oldPassword = "";

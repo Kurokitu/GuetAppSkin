@@ -1,63 +1,75 @@
 <template>
-  <v-snackbar v-model="open" :color="color" :timeout="timeout" bottom right>
-    <v-icon color="#ffffff">notification_important</v-icon>
-    {{ mes }}
-    <v-spacer></v-spacer>
-    <v-btn text @click="open = false">Close</v-btn>
-  </v-snackbar>
+    <v-snackbar
+        v-model="active"
+        class="v-application"
+        :absolute="absolute"
+        :bottom="bottom"
+        :color="color"
+        :left="left"
+        :multi-line="multiLine"
+        :right="right"
+        :timeout="timeout"
+        :top="top"
+        :vertical="vertical"
+        @click="clickSnackbar"
+    >
+        {{text}}
+        <v-btn
+            v-if="!!buttonText"
+            :color="buttonColor"
+            text
+            @click.stop="clickButton"
+        >{{buttonText}}</v-btn>
+    </v-snackbar>
 </template>
- 
+
 <script>
 export default {
-  name: "Snackbar",
-  props: {},
-  components: {},
-  data() {
-    return {
-      icon: "",
-      color: "error",
-      open: false,
-      mes: "",
-      timeout: 5000
-    };
-  },
-  created() {},
-  methods: {
-    info(mes) {
-      //......
-      this.color = "#2196F3";
-      this.open = true;
-      this.mes = mes;
-    },
-    error(mes) {
-      //......
-      this.color = "#F44336";
-      this.open = true;
-      this.mes = mes;
-    },
-    warning(mes) {
-      //......
-      this.color = "#FF9800";
-      this.open = true;
-      this.mes = mes;
-    },
-    success(mes) {
-      //......
-      this.color = "#4CAF50";
-      this.open = true;
-      this.mes = mes;
-    }
-  }
-};
-</script>
+    props: {
+        text: {type: String},
+        buttonText: {type: String},
+        buttonColor: {type: String, default: 'primary lighten-1'},
+        closeOnClick: {type: Boolean, default: false},
+        closeOnButtonClick: {type: Boolean, default: true},
+        onClick: {type: Function},
+        onButtonClick: {type: Function},
+        onOpen: {type: Function},
+        onClose: {type: Function},
 
-<style lang='scss'>
-.v-snack {
-  .v-snack__content {
-    justify-content: flex-start;
-    i {
-      margin-right: 10px;
-    }
-  }
+        // 以下是v-snackbar自带的配置
+        // https://vuetifyjs.com/zh-Hans/components/snackbars/
+        absolute: {type: Boolean, default: false},
+        bottom: {type: Boolean, default: false},
+        color: {type: String},
+        left: {type: Boolean, default: false},
+        multiLine: {type: Boolean, default: false},
+        right: {type: Boolean, default: false},
+        timeout: {type: Number, default: 6000},
+        top: {type: Boolean, default: false},
+        vertical: {type: Boolean, default: false},
+    },
+    data() {
+        return {
+            active: false,
+        }
+    },
+    watch: {
+        active(newval) {
+            this.$emit('activeChange', newval);
+        },
+    },
+    methods: {
+        clickButton() {
+            if (this.onButtonClick) this.onButtonClick();
+            if (this.closeOnButtonClick) this.active = false;
+        },
+        clickSnackbar() {
+            if (this.onClick) this.onClick();
+            if (this.closeOnClick) this.active = false;
+        },
+    },
+    mounted() {
+        this.active = true;
+    },
 }
-</style>
+</script>

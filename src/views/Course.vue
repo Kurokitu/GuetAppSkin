@@ -38,10 +38,7 @@ export default {
       timeTable: undefined,
     };
   },
-  components: {},
-  created() {},
   mounted() {
-
     this.Course(this.toweek);
 
     this.timeTable = new Timetables({
@@ -71,14 +68,20 @@ export default {
         );
         console.log(e);
       },
-      styles: {
-        // palette: ["#dedcda", "#ff4081"],
-      },
+    });
+
+    this.timeTable.setOption({
+      timetables: this.courseList,
     });
 
     this.pushWeekItems();
-
-    console.log(this.timeTable);
+  },
+  watch: {
+    toweek() {
+      this.timeTable.setOption({
+        timetables: this.courseList,
+      });
+    },
   },
   methods: {
     /**
@@ -126,7 +129,6 @@ export default {
     },
 
     Course(week) {
-      console.log(this.timeTable);
 
       let cdata = this.$get.getNewCourse()[week];
 
@@ -160,10 +162,6 @@ export default {
       }
 
       this.courseList = result;
-
-      this.timeTable.setOption({
-        timetables: result
-      })
     },
   },
 };

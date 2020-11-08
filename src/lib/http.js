@@ -1,4 +1,3 @@
-
 import axios from 'axios'
 import Router from '../router/index'
 import relogin from './relogin'
@@ -24,7 +23,7 @@ axios.interceptors.response.use((response) => {
         if (nc === 1) {
             // localStorage.clear();
             // Router.push('/Login');
-            this.$toast('发生了一些错误。请重试。', 'error');
+            // this.$toast('发生了一些错误。请重试。', 'error');
         }else if(nc === 3) {
             localStorage.clear();
             Router.push('/Login');

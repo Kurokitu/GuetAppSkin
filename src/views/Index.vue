@@ -9,7 +9,9 @@
       <v-card v-else elevation="0" class="pa-0">
         <strong class="display-1 light-blue--text">{{ myname }},</strong>
         <v-card-text class="pl-1 d-inline">
-          <strong class="headline" style="text-align: right"> 你好！：)</strong>
+          <strong class="headline" style="text-align: right; margin-top: 20px"
+            ><br />你好！：)</strong
+          >
         </v-card-text>
         <v-card-text class="pl-2 pt-4">
           <p>ID: {{ myid }}</p>
@@ -34,9 +36,9 @@
         </transition>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title style="line-height: 30px;">
+            <v-list-item-title style="line-height: 30px">
               今天的课程 ({{ daytext }})
-              <v-btn style="float:right;" icon color="blue" @click="Course()">
+              <v-btn style="float: right" icon color="blue" @click="Course()">
                 <v-icon>mdi-cached</v-icon>
               </v-btn>
             </v-list-item-title>
@@ -45,29 +47,24 @@
         <transition name="fade">
           <div v-if="todayState && todayState.length != 0">
             <div v-for="(item, index) in today" :key="index">
-              <v-list-item v-for="(cItem, i) in item" :key="i">
+              <v-list-item v-if="item.length > 1">
                 <v-list-item-content>
-                  <v-list-item-title v-if="index === 0"
-                    >1 - 2 节</v-list-item-title
-                  >
-                  <v-list-item-title v-if="index === 1"
-                    >3 - 4 节</v-list-item-title
-                  >
-                  <v-list-item-title v-if="index === 2"
-                    >5 - 6 节</v-list-item-title
-                  >
-                  <v-list-item-title v-if="index === 3"
-                    >7 - 8 节</v-list-item-title
-                  >
-                  <v-list-item-title v-if="index === 4"
-                    >9 - 10 节</v-list-item-title
-                  >
-                  <v-list-item-subtitle v-if="cItem[1]">{{
-                    cItem[1]
+                  <v-list-item-title>
+                    {{ get_course_num(index) }}
+                  </v-list-item-title>
+                  <v-list-item-subtitle v-if="item[1]">{{
+                    item[1]
                   }}</v-list-item-subtitle>
                   <v-list-item-subtitle v-else>{{
-                    cItem[0]
+                    item[0]
                   }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>
+                    第一小节
+                    {{ get_time(timemode)[index][0] }}
+                    <br />
+                    第二小节
+                    {{ get_time(timemode)[index][1] }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </div>
@@ -89,10 +86,15 @@
 
 <script>
 import axios from "@/lib/api";
+import { get_time, get_course_num } from "@/lib/get_time";
+
 export default {
   name: "Index",
   data() {
     return {
+      get_time,
+      get_course_num,
+      timemode: process.env.VUE_APP_DATE_MODE,
       myname: null,
       myid: null,
       myclass: null,
@@ -146,8 +148,8 @@ export default {
         })
         .then((res) => {
           this.$save.saveCoures(res.data.data);
-          this.today = this.$get.getNewCourse()[res.data.data.toweek - 1][
-            this.day.value - 1
+          this.today = this.$get.getNewCourse()[this.$get.getToweek() - 1][
+            this.day - 1
           ];
           this.getTodayState();
 
@@ -158,13 +160,20 @@ export default {
         .catch((err) => {
           console.log(err);
           this.classIsLoading = false;
-          this.$toast('发生了一些错误。请重试。', 'error');
+          if (this.$get.getNewCourse() === null) {
+            this.$toast("发生了一些错误。请重试。错误信息：" + err, "error");
+          } else {
+            this.today = this.$get.getNewCourse()[this.$get.getToweek() - 1][
+              this.day - 1
+            ];
+            this.$toast("拉取数据失败了，目前展示本地缓存数据。", "error");
+          }
         });
     },
 
     getTodayState() {
       this.today.forEach((item) => {
-        if (item.length === 1) {
+        if (item.length > 1) {
           this.n + 1;
           if (this.n < 5) {
             this.todayState = true;

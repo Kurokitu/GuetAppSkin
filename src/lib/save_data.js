@@ -46,7 +46,29 @@ const requests = {
 
     saveCoures(data) {
         localStorage.setItem('Course', JSON.stringify(data));
-        localStorage.setItem('NewCourse', JSON.stringify(course.course_convert(data)));
+        let newcoursedata = course.course_convert(data);
+        localStorage.setItem('NewCourse', JSON.stringify(newcoursedata));
+        localStorage.setItem('Toweek', data.toweek);
+
+        // let coursepage = [
+        //     [], [], [], [], [], [], []
+        // ]
+
+        // for (let i = 0; i < newcoursedata.length; i++) {
+        //     for (let j = 0; j < newcoursedata[i].length; j++) {
+        //         for (let c = 0; c < newcoursedata[i][j].length; c++) {
+        //             if (newcoursedata[i][j][c].length !== 0) {
+        //                 if(newcoursedata[i][j][c].length > 1) {
+        //                     coursepage[i][j][c] = newcoursedata[i][j][c]
+        //                 }
+        //             } else {
+        //                 coursepage.push([])
+        //             }
+        //         }
+        //     }
+        // }
+
+        // localStorage.setItem('CoursePage', JSON.stringify(coursepage));
     }
 }
 

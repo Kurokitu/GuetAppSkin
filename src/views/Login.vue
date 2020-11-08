@@ -81,13 +81,13 @@ export default {
             this.$save.saveUserInfo(res.data);
             this.$router.push("/Index");
           } else {
-            this.$snackbar.error(res.msg);
+            this.$toast(res.data.msg, 'error');
           }
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
-          this.$snackbar.error("登入失败，请检查");
+          this.$toast(err, 'error');
         });
     },
   },

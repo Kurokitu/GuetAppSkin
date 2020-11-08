@@ -8,7 +8,7 @@ const requests = {
                 newdata[i - 1][d - 1] = []
                 for (let j = 1; j <= 5; j++) {
                     if (course[i][j][d].length !== 0) {
-                        newdata[i - 1][d - 1][j - 1] = course[i][j][d]
+                        newdata[i - 1][d - 1][j - 1] = course[i][j][d][0]
                     } else {
                         newdata[i - 1][d - 1][j - 1] = []
                     }

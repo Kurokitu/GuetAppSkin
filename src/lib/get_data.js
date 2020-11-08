@@ -17,9 +17,18 @@ const requests = {
         return JSON.parse(data)
     },
 
+    getOldCourse() {
+        let data = localStorage.getItem('Course');
+        return JSON.parse(data)
+    },
+
     getNewCourse() {
         let data = localStorage.getItem('NewCourse');
         return JSON.parse(data)
+    },
+
+    getToweek() {
+        return parseInt(localStorage.getItem('Toweek'));
     }
 }
 

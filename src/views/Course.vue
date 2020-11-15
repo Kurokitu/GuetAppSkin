@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       get_time_by_course,
-      timemode: process.env.VUE_APP_DATE_MODE,
+      timemode: localStorage.getItem("timemode") ? localStorage.getItem("timemode") : process.env.VUE_APP_DATE_MODE,
       toweek: this.$get.getToweek() - 1,
       weekItems: [],
       Timetables,

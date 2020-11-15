@@ -11,9 +11,9 @@ import VueQrcode from '@chenfengyuan/vue-qrcode';
 import save from "@/lib/save_data";
 import get from "@/lib/get_data";
 import relogin from "@/lib/relogin";
-import SnackbarComponent from '@/components/snackbar'
-import DialogComponent from '@/components/dialog'
-
+import SnackbarComponent from '@/components/snackbar';
+import DialogComponent from '@/components/dialog';
+import plusExtends from '@/lib/plus';
 
 Vue.use(VueBus);
 Vue.config.productionTip = false
@@ -32,6 +32,7 @@ Vue.prototype.$save = save;
 Vue.prototype.$get = get;
 Vue.prototype.$relogin = relogin;
 Vue.component(VueQrcode.name, VueQrcode);
+Vue.prototype.$plusExtends = plusExtends;
 
 Vue.component('my-app-bar', MyAppBar);
 Vue.component('with-app-bar', WithAppBar);

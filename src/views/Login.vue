@@ -46,6 +46,7 @@
 
 <script>
 import axios from "@/lib/api";
+import vaxios from "axios";
 
 export default {
   name: "login",
@@ -63,38 +64,92 @@ export default {
         { name: "学生", identity: "student" },
         // { name: '教师', identity: 'teacher' }
       ],
+      version: localStorage.getItem("version"),
+      updateurl: localStorage.getItem("updateurl"),
+      updateinfo: localStorage.getItem("updateinfo"),
     };
   },
+
+  mounted() {
+    this.checkconf();
+    if (this.$get.getAuthData.cookie) {
+      this.$router.psuh("/Index");
+    }
+  },
+
   methods: {
+    gotoupdate() {
+      this.$plusExtends(() => {
+        window.plus.runtime.openURL(this.updateurl);
+      });
+    },
+
+    update_confirm() {
+      this.$dialog({
+        title: "V" + this.version,
+        content: this.updateinfo,
+        rawHtml: true,
+        buttons: [
+          {
+            text: "更新",
+            onClick: () => {
+              this.gotoupdate();
+            },
+          },
+          {
+            text: "取消",
+            onClick: () => {
+              console.log("Click another button");
+            },
+          },
+        ],
+      });
+    },
+
+    checkconf() {
+      vaxios
+        .get(process.env.VUE_APP_CONF_URL + "?t=" + new Date().getTime())
+        .then(function (res) {
+          localStorage.setItem("timemode", res.data.timemode);
+          localStorage.setItem("version", res.data.version);
+          localStorage.setItem("updateurl", res.data.updateurl);
+          localStorage.setItem("updateinfo", res.data.updateinfo);
+        })
+        .catch(function (error) {
+          if (!localStorage.getItem("timemode")) {
+            localStorage.setItem("timemode", "winter");
+          }
+          console.log(error);
+        });
+
+      if (this.version > parseFloat(process.env.VUE_APP_VERSION)) {
+        this.update_confirm();
+      }
+    },
     validate() {
       axios
         .bindLogin({
           username: this.id,
           password: this.password,
           identity: this.select.identity,
-          type: "init_login"
+          type: "init_login",
         })
         .then((res) => {
-          console.log(res)
-          if(res.data.status === 2){
+          console.log(res);
+          if (res.data.status === 2) {
             res.data.data.stutype = this.select.identity;
             this.$save.saveUserInfo(res.data);
             this.$router.push("/Index");
           } else {
-            this.$toast(res.data.msg, 'error');
+            this.$toast(res.data.msg, "error");
           }
           console.log(res);
         })
         .catch((err) => {
           console.log(err);
-          this.$toast(err, 'error');
+          this.$toast(err, "error");
         });
     },
-  },
-  mounted() {
-    if(this.$get.getAuthData.cookie) {
-      this.$router.psuh("/Index");
-    }
   },
 };
 </script>

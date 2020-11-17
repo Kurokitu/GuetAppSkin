@@ -34,7 +34,8 @@ export default {
       weekItems: [],
       Timetables,
       courseList: null,
-      day: new Date().getDay() === 0 ? 7 : new Date().getDay() + 1,
+      // day: new Date().getDay() === 0 ? 7 : new Date().getDay() + 1,
+      day: this.getWeekDate().value,
       timeTable: undefined,
     };
   },

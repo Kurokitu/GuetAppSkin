@@ -52,7 +52,7 @@ export default function (url, {
     // 默认求情方式post
     method = 'post',
     // 超时
-    timeout = 3000,
+    timeout = 5000,
     // 请求主题
     data = {},
     // 请求头

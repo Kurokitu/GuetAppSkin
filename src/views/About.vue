@@ -29,6 +29,19 @@
           </v-list-item-content>
         </v-list-item>
       </v-card>
+
+      <v-card class="mx-auto mt-12 pa-4">
+        <v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
+              <strong>反馈</strong>
+            </v-list-item-title>
+            <v-list-item-content>
+              QQ: 1469924277
+            </v-list-item-content>
+          </v-list-item-content>
+        </v-list-item>
+      </v-card>
     </div>
   </with-app-bar>
 </template>
@@ -51,7 +64,7 @@ export default {
     LshowOn() {
       this.show = true;
       if (this.showclicknum == 10) {
-        this.$snackbar.info("再点也没用啦！");
+        this.$toast("再点也没用啦！", "info");
         this.showclicknum = 0;
       }
     }

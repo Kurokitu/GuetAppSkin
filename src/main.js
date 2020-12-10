@@ -14,6 +14,7 @@ import relogin from "@/lib/relogin";
 import SnackbarComponent from '@/components/snackbar';
 import DialogComponent from '@/components/dialog';
 import plusExtends from '@/lib/plus';
+import '@/lib/check';
 
 Vue.use(VueBus);
 Vue.config.productionTip = false

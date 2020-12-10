@@ -26,6 +26,16 @@
         </v-card-text>
       </v-card>
 
+      <v-alert
+        v-if="notice_switch !== 'false'"
+        icon="mdi-wrench"
+        text
+        dismissible
+        type="info"
+      >
+        {{ notice }}
+      </v-alert>
+
       <v-alert prominent type="info" v-if="nowversion < version">
         <v-row align="center">
           <v-col class="grow"> 有新版本 V{{ version }}</v-col>
@@ -105,7 +115,6 @@
 
 <script>
 import axios from "@/lib/api";
-import vaxios from "axios";
 import { get_time, get_course_num } from "@/lib/get_time";
 
 export default {
@@ -115,7 +124,7 @@ export default {
       nowversion: parseFloat(process.env.VUE_APP_VERSION),
       get_time,
       get_course_num,
-      toweek: this.$get.getToweek(),
+      toweek: 0,
       timemode: localStorage.getItem("timemode")
         ? localStorage.getItem("timemode")
         : process.env.VUE_APP_DATE_MODE,
@@ -134,11 +143,12 @@ export default {
       version: localStorage.getItem("version"),
       updateurl: localStorage.getItem("updateurl"),
       updateinfo: localStorage.getItem("updateinfo"),
+      notice_switch: localStorage.getItem("notice_switch"),
+      notice: localStorage.getItem("notice"),
     };
   },
   mounted() {
     this.onResize();
-    this.checkconf();
     this.UserInfo();
     this.Course();
     this.day = this.getWeekDate();
@@ -183,14 +193,14 @@ export default {
 
     update_confirm() {
       this.$dialog({
-        title: "V"+this.version,
+        title: "V" + this.version,
         content: this.updateinfo,
         rawHtml: true,
         buttons: [
           {
             text: "更新",
             onClick: () => {
-              this.gotoupdate()
+              this.gotoupdate();
             },
           },
           {
@@ -201,23 +211,6 @@ export default {
           },
         ],
       });
-    },
-
-    checkconf() {
-      vaxios
-        .get(process.env.VUE_APP_CONF_URL + "?t=" + new Date().getTime())
-        .then(function (res) {
-          localStorage.setItem("timemode", res.data.timemode);
-          localStorage.setItem("version", res.data.version);
-          localStorage.setItem("updateurl", res.data.updateurl);
-          localStorage.setItem("updateinfo", res.data.updateinfo);
-        })
-        .catch(function (error) {
-          if (!localStorage.getItem("timemode")) {
-            localStorage.setItem("timemode", "winter");
-          }
-          console.log(error);
-        });
     },
 
     onResize() {
@@ -263,6 +256,7 @@ export default {
             this.$toast("发生了一些错误。请重试。错误信息：" + err, "error");
           }
         });
+      this.toweek = this.$get.getToweek() - 1;
       this.getTodayState();
     },
 

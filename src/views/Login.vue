@@ -46,7 +46,6 @@
 
 <script>
 import axios from "@/lib/api";
-import vaxios from "axios";
 
 export default {
   name: "login",
@@ -71,7 +70,6 @@ export default {
   },
 
   mounted() {
-    this.checkconf();
     if (this.$get.getAuthData.cookie) {
       this.$router.psuh("/Index");
     }
@@ -106,26 +104,6 @@ export default {
       });
     },
 
-    checkconf() {
-      vaxios
-        .get(process.env.VUE_APP_CONF_URL + "?t=" + new Date().getTime())
-        .then(function (res) {
-          localStorage.setItem("timemode", res.data.timemode);
-          localStorage.setItem("version", res.data.version);
-          localStorage.setItem("updateurl", res.data.updateurl);
-          localStorage.setItem("updateinfo", res.data.updateinfo);
-        })
-        .catch(function (error) {
-          if (!localStorage.getItem("timemode")) {
-            localStorage.setItem("timemode", "winter");
-          }
-          console.log(error);
-        });
-
-      if (this.version > parseFloat(process.env.VUE_APP_VERSION)) {
-        this.update_confirm();
-      }
-    },
     validate() {
       axios
         .bindLogin({

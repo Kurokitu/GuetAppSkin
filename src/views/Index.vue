@@ -36,7 +36,7 @@
         {{ notice }}
       </v-alert>
 
-      <v-alert prominent type="info" v-if="nowversion < version">
+      <v-alert prominent type="info" v-if="nowversion < version && process.env.VUE_APP_TYPE === 'App'">
         <v-row align="center">
           <v-col class="grow"> 有新版本 V{{ version }}</v-col>
           <v-col class="shrink">
@@ -55,7 +55,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title style="line-height: 30px">
-              今天的课程 (第{{ toweek }}周 {{ daytext }})
+              今天的课程 (第{{ toweek + 1 }}周 {{ daytext }})
               <v-btn style="float: right" icon color="blue" @click="Course()">
                 <v-icon>mdi-cached</v-icon>
               </v-btn>
@@ -100,13 +100,13 @@
         </transition>
         <v-divider class="mx-4"></v-divider>
         <v-list-item v-if="!classIsLoading">
-          <v-btn color="primary" @click="preDay()">上一天</v-btn>
+          <v-btn color="primary" @click="preDay()">前一天</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="success" @click="$router.push('/Course')"
             >查看完整课表</v-btn
           >
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="nextDay()">下一天</v-btn>
+          <v-btn color="primary" @click="nextDay()">后一天</v-btn>
         </v-list-item>
       </v-card>
     </v-card>

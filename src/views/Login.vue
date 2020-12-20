@@ -73,6 +73,9 @@ export default {
     if (this.$get.getAuthData.cookie) {
       this.$router.psuh("/Index");
     }
+    if (this.version > parseFloat(process.env.VUE_APP_VERSION) && process.env.VUE_APP_TYPE === 'App') {
+      this.update_confirm()
+    }
   },
 
   methods: {

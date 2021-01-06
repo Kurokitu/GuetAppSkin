@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "loglevel": "^1.6.7",
     "timetables": "^1.1.0",
